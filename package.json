@@ -10,7 +10,7 @@
     "dev": "webpack-dev-server --port 3000"
   },
   "dependencies": {
-    "uikit": "^2.26.3",
+    "uikit": "^2.26.3"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",
