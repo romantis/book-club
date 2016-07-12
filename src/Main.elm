@@ -1,11 +1,17 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Navigation
 import Messages exposing (Msg(..))
 import Models exposing (Model, initialModel)
 import View exposing (view)
 import Update exposing (update)
-import Routing exposing (Route)
+import Routing exposing (Route(..))
+import Members.Commands as Members
+import Meetups.Commands as Meetups
+import Meetup.Main as Meetup
+import Errors.Main as Errors
+
+
 
 
 init : Result String Route -> ( Model, Cmd Msg )
@@ -14,12 +20,14 @@ init result =
         currentRoute =
             Routing.routeFromResult result
     in
-        ( initialModel currentRoute, Cmd.none )
+        ( initialModel currentRoute
+        , urlUpdCmd currentRoute 
+        ) 
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Model -> Sub Msg 
 subscriptions model =
-    Sub.none 
+    Sub.map ErrMsg (Errors.sub model.errors)
 
 
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
@@ -28,7 +36,21 @@ urlUpdate result model =
         currentRoute =
             Routing.routeFromResult result
     in
-        ( { model | route = currentRoute }, Cmd.none )
+        ( { model | route = currentRoute }
+        , urlUpdCmd currentRoute 
+        )
+
+urlUpdCmd : Route -> Cmd Msg
+urlUpdCmd route =
+    case route of 
+        MeetupsRoute ->
+            Cmd.map MeetupsMsg Meetups.fetch
+        MeetupRoute id ->
+            Cmd.map MeetupMsg (Meetup.fetch id)
+        MembersRoute ->
+            Cmd.map MembersMsg Members.fetch
+        _ ->
+            Cmd.none 
 
 
 main : Program Never
