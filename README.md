@@ -1,2 +1,2 @@
-#Erm-starter project
+#Elm starter project
 Work in progress...
