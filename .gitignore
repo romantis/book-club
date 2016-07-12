@@ -1,9 +1,11 @@
-elm-stuff
-dist/
+.DS_Store
 node_modules
+elm-stuff
+coverage
+dist
+tmp
 elm.js
 npm-debug.log
-.DS_Store
 .editorconfig
 *.sublime-workspace
 *.sublime-project
