@@ -2,7 +2,7 @@
 node_modules
 elm-stuff
 coverage
-dist
+dist/
 tmp
 elm.js
 npm-debug.log
