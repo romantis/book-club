@@ -4,21 +4,39 @@ import String
 import Navigation
 import UrlParser exposing (..)
 
+-- import Debug
 
 type Route
-    = HomeRoute
-    | ComponentRoute
-    | NotFoundRoute
+    = NotFoundRoute 
+    | MeetupsRoute
+    | MeetupRoute Int
+    | MembersRoute
 
+
+routeString : Route -> String
+routeString route =
+    case route of 
+        MeetupsRoute ->
+            "meetups"
+        _ ->
+            ""
+        
 
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ format HomeRoute (s "")
-        , format ComponentRoute (s "component")
+        [ format MeetupsRoute (s "") 
+        , format MeetupsRoute (s "meetups")
+        , format MeetupRoute (s "meetup" </> int)
+        , format MembersRoute (s "members")
         ]
 
 
+-- pathParser : Navigation.Location -> Result String Route
+-- pathParser location =
+--     location.pathname
+--         |> parse identity matchers
+        
 hashParser : Navigation.Location -> Result String Route
 hashParser location =
     location.hash
@@ -33,9 +51,9 @@ parser =
 
 routeFromResult : Result String Route -> Route
 routeFromResult result =
-    case result of
+    case Debug.log "" result of
         Ok route ->
             route
 
         Err string ->
-            NotFoundRoute
+            NotFoundRoute 
