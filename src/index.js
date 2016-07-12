@@ -1,6 +1,10 @@
 'use strict';
 
+require('./main.css');
+
 require('uikit/dist/css/uikit.almost-flat.min.css');
+
+
 
 // Require index.html so it gets copied to dist
 require('./index.html');
