@@ -4,5 +4,5 @@ elm.js
 npm-debug.log
 .DS_Store
 .editorconfig
-one.sublime-workspace
-one.sublime-project
+*.sublime-workspace
+*.sublime-project
