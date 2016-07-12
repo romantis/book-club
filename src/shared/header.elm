@@ -32,7 +32,7 @@ update msg model =
         
         Navigate url ->
             ( model
-            , Navigation.newUrl url
+            , Navigation.newUrl ("#" ++ url)
             -- , Navigation.modifyUrl url
             )
 
@@ -52,7 +52,7 @@ view model =
           ]
           [ text "BookClub" ]
       , ul [ class "uk-navbar-nav" ] 
-          (List.map (navItem model.pageRoute) [ "#meetups", "#members" ])
+          (List.map (navItem model.pageRoute) [ "meetups", "members" ])
       , logInView model.logged
       ]
     ]
