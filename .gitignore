@@ -1,4 +1,5 @@
 elm-stuff
+dist/
 node_modules
 elm.js
 npm-debug.log
