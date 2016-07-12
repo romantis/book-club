@@ -1,84 +1,59 @@
 module Routing exposing (..)
 
---import String
+import String
 import Navigation
 import UrlParser exposing (..)
 
-import Hop exposing (makeUrl, makeUrlFromLocation, matchUrl, setQuery)
-import Hop.Types exposing (Config, Query, Location, PathMatcher, Router)
-import Hop.Matchers exposing (..)
-
-
-import Debug
+-- import Debug
 
 type Route
-    = HomeRoute
-    | ComponentRoute
-    | NotFoundRoute
+    = NotFoundRoute 
+    | MeetupsRoute
+    | MeetupRoute Int
+    | MembersRoute
 
 
-type Msg
-    = NavigateTo String
-    | SetQuery Query
-
-
-type alias Model =
-    { location : Location
-    , route : Route
-    }
+routeString : Route -> String
+routeString route =
+    case route of 
+        MeetupsRoute ->
+            "meetups"
+        _ ->
+            ""
+        
 
 matchers : Parser (Route -> a) a
 matchers =
-    [ match1 HomeRoute ""
-    , match1 ComponentRoute ""
-    ]
-
-routerConfig : Config Route
-routerConfig =
-    { hash = True
-    , basePath = ""
-    , matchers = matchers
-    , notFound = NotFoundRoute
-    }
+    oneOf
+        [ format MeetupsRoute (s "") 
+        , format MeetupsRoute (s "meetups")
+        , format MeetupRoute (s "meetup" </> int)
+        , format MembersRoute (s "members")
+        ]
 
 
+-- pathParser : Navigation.Location -> Result String Route
+-- pathParser location =
+--     location.pathname
+--         |> parse identity matchers
+        
+hashParser : Navigation.Location -> Result String Route
+hashParser location =
+    location.hash
+        |> String.dropLeft 1
+        |> parse identity matchers
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case (Debug.log "msg" msg) of
-        NavigateTo path ->
-            let
-                command =
-                    -- First generate the URL using your router config
-                    -- Then generate a command using Navigation.newUrl
-                    makeUrl routerConfig path
-                        |> Navigation.newUrl
-            in
-                ( model, command )
-
-        SetQuery query ->
-            let
-                command =
-                    -- First modify the current stored location record (setting the query)
-                    -- Then generate a URL using makeUrlFromLocation
-                    -- Finally, create a command using Navigation.newUrl
-                    model.location
-                        |> setQuery query
-                        |> makeUrlFromLocation routerConfig
-                        |> Navigation.newUrl
-            in
-                ( model, command )
+parser : Navigation.Parser (Result String Route)
+parser =
+    Navigation.makeParser hashParser
 
 
+routeFromResult : Result String Route -> Route
+routeFromResult result =
+    case Debug.log "" result of
+        Ok route ->
+            route
 
-urlParser : Navigation.Parser ( Route, Hop.Types.Location )
-urlParser =
-    Navigation.makeParser (.href >> matchUrl routerConfig)
-
-
-urlUpdate : ( Route, Hop.Types.Location ) -> Model -> ( Model, Cmd Msg )
-urlUpdate ( route, location ) model =
-    ( { model | route = route, location = location }, Cmd.none )
-
-
+        Err string ->
+            NotFoundRoute 
