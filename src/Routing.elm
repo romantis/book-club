@@ -10,7 +10,6 @@ type Route
     = NotFoundRoute 
     | MeetupsRoute
     | MeetupRoute Int
-    | MembersRoute
 
 
 routeString : Route -> String
@@ -28,15 +27,9 @@ matchers =
         [ format MeetupsRoute (s "") 
         , format MeetupsRoute (s "meetups")
         , format MeetupRoute (s "meetup" </> int)
-        , format MembersRoute (s "members")
         ]
 
 
--- pathParser : Navigation.Location -> Result String Route
--- pathParser location =
---     location.pathname
---         |> parse identity matchers
-        
 hashParser : Navigation.Location -> Result String Route
 hashParser location =
     location.hash
