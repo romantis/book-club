@@ -6,7 +6,6 @@ import Models exposing (Model, initialModel)
 import View exposing (view)
 import Update exposing (update)
 import Routing exposing (Route(..))
-import Members.Commands as Members
 import Meetups.Commands as Meetups
 import Meetup.Main as Meetup
 import Errors.Main as Errors
@@ -47,8 +46,6 @@ urlUpdCmd route =
             Cmd.map MeetupsMsg Meetups.fetch
         MeetupRoute id ->
             Cmd.map MeetupMsg (Meetup.fetch id)
-        MembersRoute ->
-            Cmd.map MembersMsg Members.fetch
         _ ->
             Cmd.none 
 

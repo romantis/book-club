@@ -4,7 +4,6 @@ import Routing exposing (routeString)
 import Shared.Header as Header
 import Meetups.Model as Meetups
 import Meetup.Main as Meetup
-import Members.Model as Members
 import Errors.Main as Errors
 
 
@@ -14,7 +13,6 @@ type alias Model =
     , header : Header.Model
     , meetups : Meetups.Model
     , meetup : Meetup.Model
-    , members : Members.Model
     , errors : Errors.Model
     }
 
@@ -25,6 +23,5 @@ initialModel route =
     , header = (Header.init <| routeString route)
     , meetups = Meetups.init
     , meetup = Meetup.init
-    , members = Members.init
     , errors = Errors.init
     }

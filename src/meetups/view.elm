@@ -116,11 +116,12 @@ searchForm =
                 , onInput SearchQuery 
                 , autofocus True
                 , tabindex 1
-                , placeholder "Search Book Event"
+                , placeholder "Search meetup"
                 , class "uk-form-large uk-width-1-1"
-                , style 
-                    [ "height" => "3em"
-                    ] 
+                --, style 
+                --    [ "height" => "4em"
+                --    , "width" => "100%"
+                --    ] 
                 ] []
         ] 
  

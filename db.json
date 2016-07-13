@@ -30,55 +30,5 @@
       "place": "Lviv, Ukraine, Another Bar",
       "members": [7,8,9]
     }
-  ],
-  "members": [
-    {
-      "id": 2,
-      "name": "John Green"
-    },
-    {
-      "id": 2,
-      "name": "Anna Pink"
-    },
-    {
-      "id": 3,
-      "name": "Denis White"
-    },
-    {
-      "id": 4,
-      "name": "Kristine Dance"
-    },
-    {
-      "id": 5,
-      "name": "Steven Black"
-    },
-    {
-      "id": 6,
-      "name": "Julia Love"
-    },
-    {
-      "id": 7,
-      "name": "Michael Claus"
-    },
-    {
-      "id": 8,
-      "name": "Britney Mambe"
-    },
-    {
-      "id": 9,
-      "name": "Tomas Pine"
-    },
-    {
-      "id": 10,
-      "name": "Sofia Hammid"
-    },
-    {
-      "id": 11,
-      "name": "Dick Ropper"
-    },
-    {
-      "id": 12,
-      "name": "Jeets Mayers"
-    }
   ]
 }

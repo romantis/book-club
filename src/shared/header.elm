@@ -52,7 +52,7 @@ view model =
           ]
           [ text "BookClub" ]
       , ul [ class "uk-navbar-nav" ] 
-          (List.map (navItem model.pageRoute) [ "meetups", "members" ])
+          (List.map (navItem model.pageRoute) [ "meetups" ])
       , logInView model.logged
       ]
     ]
@@ -62,7 +62,7 @@ navItem currentRoute route =
   li [ classList ["uk-active" => (currentRoute == route) ] ]
     [ a 
         [ onClick <| Navigate route
-        --  How no make prevent default?
+        --  How no prevent default?
         -- , href (route)
         ]
         [ text route ]
