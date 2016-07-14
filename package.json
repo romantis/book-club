@@ -4,11 +4,14 @@
   "description": "",
   "main": "api.js",
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "font-awesome": "^4.6.3",
-    "foundation-sites": "^6.2.3",
-    "purecss": "^0.6.0",
-    "uikit": "^2.26.3"
+    "uikit": "^2.26.4"
+  },
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "api": "node api.js",
+    "dev": "webpack-dev-server --port 3000",
+    "start": "webpack-dev-server --port 3000"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",
@@ -21,12 +24,6 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
-  },
-  "scripts": {
-    "api": "node api.js",
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev": "webpack-dev-server --port 3000"
   },
   "repository": {
     "type": "git",
