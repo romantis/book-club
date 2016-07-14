@@ -14,6 +14,10 @@ import Errors.Main as Errors
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
+
+        {- 
+            Messages for Pages
+        -}
         MeetupsMsg subMsg ->
             let 
                 (subModel, subCmd) =
@@ -32,7 +36,10 @@ update msg model =
                 , Cmd.map MeetupMsg subCmd
                 )
 
-        
+
+        {-
+            Messages For components
+        -}
         HeaderMsg subMsg ->
             let 
                 (subModel, subCmd) = 
