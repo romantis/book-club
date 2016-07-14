@@ -7,6 +7,7 @@ type alias Model =
     , search : String
     }
 
+init : Model
 init =
     Model [] "" 
  

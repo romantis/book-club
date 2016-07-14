@@ -19,6 +19,7 @@ type alias Model =
     , nextId : Int
     }
 
+init: Model
 init =
     Model [] 0
 
@@ -56,7 +57,7 @@ sub model =
     else 
         Time.every (5*second) RemoveOld 
 
-
+(=>) : a -> b -> ( a, b )
 (=>) = (,) 
 
 view : Model -> Html Msg
@@ -93,7 +94,7 @@ errorType err =
             "Bad Responce code: " ++ toString code ++ " Message: " ++ msg
 
 
-
+errContainerStyle : Attribute a
 errContainerStyle = 
     style
         [ "position" => "fixed"
@@ -102,6 +103,7 @@ errContainerStyle =
         , "background" => "white"
         ]
 
+errStyle : Attribute a
 errStyle =
     style
         [ "position" => "relative"
@@ -113,6 +115,7 @@ errStyle =
         , "color" => "red"
         ]
 
+closeStyle : Attribute a
 closeStyle =
     style
         [ "position" => "absolute"

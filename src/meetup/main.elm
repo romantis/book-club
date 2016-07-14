@@ -12,7 +12,7 @@ import String
 
 -- import Debug
 
-
+(=>) : a -> b -> ( a, b )
 (=>) = (,)
 
 
@@ -37,6 +37,8 @@ type Msg
     = FetchAllFail Http.Error
     | FetchAllDone Meetup
 
+
+init: Model
 init =
     Model Nothing
 
@@ -67,6 +69,7 @@ view model =
             meetupView meetup
 
 
+meetupView : Meetup -> Html Msg
 meetupView meetup =
     section [ class " uk-article uk-width-small-3-4 uk-container-center uk-block"]
         [ h1 [ class "uk-article-title"] [ text meetup.title]
@@ -85,6 +88,7 @@ meetupView meetup =
         , p [ class "uk-article-lead"] [ text meetup.description]
         , p [] [ text <| toString meetup.members ] 
         ] 
+
 
 formatDate : Time -> String
 formatDate t =
