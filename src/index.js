@@ -1,8 +1,8 @@
 'use strict';
 
-require('./main.css');
 
 require('uikit/dist/css/uikit.almost-flat.min.css');
+require('./main.css');
 
 
 
