@@ -11,6 +11,7 @@ body {
 p {margin-bottom: 1.3em;}
 
 h1, h2, h3, h4 {
+  font-family: "Roboto Slab", Georgia, serif;
   margin: 1.414em 0 0.5em;
   font-weight: inherit;
   line-height: 1.2;
