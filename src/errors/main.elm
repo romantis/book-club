@@ -5,7 +5,6 @@ import Html.Attributes exposing (style, href, class)
 import Html.Events exposing (onClick)
 import Http
 import Time exposing (Time, second)
--- import Process exposing (sleep)
 
 
 
@@ -36,7 +35,6 @@ type Msg
     | RemoveOld Time
 
  
--- Need to remove error after some time
 update : Msg -> Model -> Model
 update msg ({errors, nextId} as model) =
     case msg of 
@@ -71,8 +69,8 @@ view model =
 errView : Error -> Html Msg
 errView err = 
     div [ errStyle ]
-        [ p [] [ text err.text ]
-        , i [ class "fa fa-close"
+        [ p [ style ["margin" => "0"]] [ text err.text ]
+        , i [ class "uk-icon-close"
             , closeStyle
             , onClick (CloseMsg err.id)
             ] [] 
@@ -100,19 +98,20 @@ errContainerStyle =
         [ "position" => "fixed"
         , "top" => "55px"
         , "right" => "20px"
-        , "background" => "white"
+        , "background" => "hsla(0,50%,50%,0.7)"
+        , "z-index" => "999"
         ]
 
 errStyle : Attribute a
 errStyle =
     style
         [ "position" => "relative"
-        , "padding" => "0 1em"
+        , "padding" => "1em"
         , "margin-top" => "2px"
         , "min-width" => "100px"
         , "min-width" => "1px"
-        , "border" => "1px solid red"
-        , "color" => "red"
+        , "border" => "1px solid transparent"
+        , "color" => "white"
         ]
 
 closeStyle : Attribute a
@@ -122,7 +121,7 @@ closeStyle =
         , "top" => "1px"
         , "right" => "1px"
         , "text-decoration" => "none"
-        , "color" => "red"
+        , "color" => "white"
         ]
 
 
