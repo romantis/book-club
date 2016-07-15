@@ -26,7 +26,10 @@ init result =
 
 subscriptions : Model -> Sub Msg 
 subscriptions model =
-    Sub.map MeetupsMsg (Meetups.sub model.meetups)
+    Sub.batch 
+        [ Sub.map MeetupsMsg (Meetups.sub model.meetups)
+        , Sub.map MeetupMsg (Meetup.sub model.meetup) 
+        ]
     
 
 
