@@ -5,7 +5,6 @@ import Html.Attributes exposing (class, classList,  href, id)
 import Html.Events exposing (onClick)
 
 import Navigation
-import Debug
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
@@ -25,8 +24,9 @@ type Msg
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
+        
         ToggleLogIn ->
-            ( {model | logged = not model.logged}
+            ( { model | logged = not model.logged}
             , Cmd.none
             )
         
@@ -80,18 +80,24 @@ logInView isLogged =
 logInToggle : Bool -> Html Msg
 logInToggle isLogged =
     if isLogged then
-        li [ class ""] 
+        div [ class "uk-navbar-content"] 
             [ button 
                 [ onClick ToggleLogIn
-                , class "uk-button uk-button-danger"
+                , class "uk-button"
                 ] 
-                [text "logOut"] 
+                [ i [ class "uk-icon-sign-out justify"] []
+                , text " "
+                , text "Sign Out"
+                ] 
             ]
     else
-        li [ class ""] 
+        div [ class "uk-navbar-content"] 
             [ button 
                 [ onClick ToggleLogIn
                 , class "uk-button uk-button-success"
                 ] 
-                [text "logIn"] 
+                [ i [ class "uk-icon-sign-in justify"] []
+                , text " "
+                , text "Sign In"
+                ] 
             ]

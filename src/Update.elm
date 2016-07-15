@@ -11,6 +11,7 @@ import Errors.Main as Errors
 
 
 
+
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
@@ -45,7 +46,7 @@ update msg model =
                 (subModel, subCmd) = 
                     Header.update subMsg model.header 
             in
-                ( model 
+                ( {model | header = subModel}
                 , Cmd.map HeaderMsg subCmd 
                 ) 
         
