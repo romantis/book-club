@@ -2,6 +2,7 @@ module Meetup.Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (src, class, style)
+import Html.App as App
 
 import Http
 import Task
@@ -9,8 +10,9 @@ import Json.Decode as Decode exposing ((:=), andThen)
 import Date exposing (Date, Month(..))
 import Time exposing (Time)
 import String
+import Errors.Main as Errors
 
--- import Debug
+import Debug
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
@@ -30,17 +32,19 @@ type alias Meetup =
 
 type alias Model = 
     { meetup : Maybe Meetup
+    , errors : Errors.Model
     }
 
 
 type Msg 
     = FetchAllFail Http.Error
     | FetchAllDone Meetup
+    | ErrMsg Errors.Msg
 
 
 init: Model
 init =
-    Model Nothing
+    Model Nothing Errors.init
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -52,10 +56,19 @@ update msg model =
 
 
         FetchAllFail err ->
-            ( model 
+            ({ model | errors = Errors.addNew err model.errors }
             , Cmd.none
             ) 
 
+
+        ErrMsg subMsg ->
+            let 
+                errModel = 
+                    Errors.update subMsg model.errors 
+            in
+                ( { model | errors = errModel }
+                , Cmd.none
+                )
 
 
 
@@ -64,13 +77,17 @@ view : Model -> Html Msg
 view model =
     case model.meetup of
         Nothing -> 
-            text "Loading..."
+            div []
+                [ text "Loading..."
+                , App.map ErrMsg (Errors.view model.errors)
+                ]
+            
         Just meetup ->
-            meetupView meetup
+            meetupView meetup (Debug.log "" model.errors)
 
 
-meetupView : Meetup -> Html Msg
-meetupView meetup =
+meetupView : Meetup -> Errors.Model -> Html Msg
+meetupView meetup errors=
     section [ class " uk-article uk-width-small-3-4 uk-container-center uk-block"]
         [ h1 [ class "uk-article-title"] [ text meetup.title]
         , div [ class "uk-article-meta "] 
@@ -87,6 +104,7 @@ meetupView meetup =
             ] []
         , p [ class "uk-article-lead"] [ text meetup.description]
         , p [] [ text <| toString meetup.members ] 
+        , App.map ErrMsg (Errors.view errors)
         ] 
 
 
