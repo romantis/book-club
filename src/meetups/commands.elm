@@ -4,8 +4,10 @@ import Http
 import Task
 import Json.Decode as Decode exposing ((:=))
 
+import Meetups.Model exposing (Model)
 import Meetup.Main exposing (Meetup, memberDecoder)
 import Meetups.Messages exposing (Msg(..))
+import Errors.Main as Errors
 
 fetch : Cmd Msg
 fetch =
@@ -23,3 +25,6 @@ decoder : Decode.Decoder (List Meetup)
 decoder =
     Decode.list memberDecoder
 
+sub : Model -> Sub Msg 
+sub model =
+    Sub.map ErrMsg (Errors.sub model.errors)

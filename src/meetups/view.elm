@@ -12,6 +12,8 @@ import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
 import Meetups.Messages exposing (Msg(..))
 
+import Errors.Main as Errors
+
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,) 
@@ -24,6 +26,7 @@ listView model =
         [ searchView 
         , headerView model.search
         , meetupsList model
+        , App.map ErrMsg (Errors.view model.errors)
         ] 
 
 

@@ -6,7 +6,6 @@ import Models exposing (Model)
 import Meetups.Update as Meetups
 import Meetup.Main as Meetup
 import Shared.Header as Header 
-import Errors.Main as Errors
 
 
 
@@ -45,15 +44,8 @@ update msg model =
                 (subModel, subCmd) = 
                     Header.update subMsg model.header 
             in
-                ( model 
+                ( {model | header = subModel}
                 , Cmd.map HeaderMsg subCmd 
                 ) 
         
-        ErrMsg subMsg ->
-            let 
-                errModel = 
-                    Errors.update subMsg model.errors 
-            in
-                ( { model | errors = errModel }
-                , Cmd.none
-                )
+

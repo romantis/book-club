@@ -2,6 +2,7 @@ module Meetups.Update exposing (..)
 
 import Meetups.Model exposing (Model) 
 import Meetups.Messages exposing (Msg(..))
+import Errors.Main as Errors
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -13,7 +14,9 @@ update msg model =
             )
 
         FetchAllFail err ->
-            ( model 
+            ( {model 
+                | errors = Errors.addNew err model.errors
+                } 
             , Cmd.none
             )
 
@@ -26,3 +29,12 @@ update msg model =
             ( model
             , Cmd.none
             )
+
+        ErrMsg subMsg ->
+            let 
+                errModel = 
+                    Errors.update subMsg model.errors 
+            in
+                ( { model | errors = errModel }
+                , Cmd.none
+                )
