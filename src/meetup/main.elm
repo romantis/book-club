@@ -178,3 +178,7 @@ memberDecoder =
         ("date" :=Decode.float)
         ("place" := Decode.string)
         ("members" := Decode.list Decode.int)
+
+sub : Model -> Sub Msg 
+sub model =
+    Sub.map ErrMsg (Errors.sub model.errors)
