@@ -14,7 +14,6 @@ import NotFound.Main as NotFound
 
 import Shared.Header as Header
 import Shared.Footer as Footer
-import Errors.Main as Errors
 
 
 view : Model -> Html Msg
@@ -22,7 +21,6 @@ view model =
   div [] 
     [ App.map HeaderMsg ( Header.view model.header)
     , page model
-    , App.map ErrMsg (Errors.view model.errors)
     , Footer.view 
     ] 
 

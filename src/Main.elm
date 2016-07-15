@@ -8,7 +8,7 @@ import Update exposing (update)
 import Routing exposing (Route(..))
 import Meetups.Commands as Meetups
 import Meetup.Main as Meetup
-import Errors.Main as Errors
+
 
 
 
@@ -26,7 +26,8 @@ init result =
 
 subscriptions : Model -> Sub Msg 
 subscriptions model =
-    Sub.map ErrMsg (Errors.sub model.errors)
+    Sub.map MeetupsMsg (Meetups.sub model.meetups)
+    
 
 
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
