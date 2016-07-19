@@ -37,6 +37,8 @@ update msg model =
             )
 
 
+
+
 init : String -> Model
 init route = 
     Model route False
@@ -56,6 +58,7 @@ view model =
       , logInView model.logged
       ]
     ]
+
 
 navItem : String -> String -> Html Msg
 navItem currentRoute route =
@@ -101,3 +104,4 @@ logInToggle isLogged =
                 , text "Sign In"
                 ] 
             ]
+

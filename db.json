@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Harry Potter MeetUp",
-      "cover": "http://lorempixel.com/400/200/people/1",
+      "cover": "http://lorempixel.com/400/200/abstract/1",
       "description" : "some awesome event in some awesome place",
       "bookId": 1,
       "date": 1467707918639,
@@ -13,7 +13,7 @@
     {
       "id": 2,
       "title": "Lord of the Ring",
-      "cover": "http://lorempixel.com/400/200/people/2",
+      "cover": "http://lorempixel.com/400/200/abstract/2",
       "description" : "some awesome event in some awesome place",
       "bookId": 2,
       "date": 1467707818639,
@@ -23,7 +23,7 @@
     {
       "id": 3,
       "title": "Night Administrator",
-      "cover": "http://lorempixel.com/400/200/people/3",
+      "cover": "http://lorempixel.com/400/200/abstract/3",
       "description" : "some awesome event in some awesome place",
       "bookId": 3,
       "date": 1467707898639,
