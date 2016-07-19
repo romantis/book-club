@@ -2,7 +2,7 @@ module Meetups.View exposing (..)
 
 import Html.App as App
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href)
+import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onSubmit, onInput)
 
 import String
@@ -23,7 +23,7 @@ import Errors.Main as Errors
 listView :Model -> Html Msg
 listView model =
     section []
-        [ searchView 
+        [ searchView
         , headerView model.search
         , meetupsList model
         , App.map ErrMsg (Errors.view model.errors)
@@ -128,3 +128,67 @@ searchForm =
                 ] []
         ] 
  
+
+viewCreate =
+    section [ class "uk-width-small-3-4 uk-container-center" ]
+        [ h1 [] [ text "Create New Meetup"]
+        , div [ class "uk-form uk-form-horizontal"]
+            [ div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "meetup-title"] [ text "Meetup title"]
+                , div [ class "uk-form-control"] 
+                    [ input 
+                        [ type' "text"
+                        , id "meetup-title"
+                        , placeholder "meetup title"
+                        ] []
+                    ]
+                ]
+            , div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "book"] [ text "Book"]
+                , div [ class "uk-form-control"] 
+                    [ input 
+                        [ type' "text"
+                        , id "book"
+                        , placeholder "Book"
+                        ] []
+                    ]
+                ]
+            , div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "meetup-date"] [ text "Date"]
+                , div [ class "uk-form-control"] 
+                    [ input 
+                        [ type' "date"
+                        , id "meetup-date"
+                        ] []
+                    ]
+                ]
+            , div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "meetup-place"] [ text "Place"]
+                , div [ class "uk-form-control"] 
+                    [ input 
+                        [ type' "text"
+                        , id "meetup-place"
+                        ] []
+                    ]
+                ]
+            , div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "meetup-cover"] [ text "Cover"]
+                , div [ class "uk-form-control"] 
+                    [ input 
+                        [ type' "url"
+                        , id "meetup-cover"
+                        ] []
+                    ]
+                ]
+            , div [ class "uk-form-row"] 
+                [ label [ class "uk-form-label", for "meetup-description"] [ text "Cover"]
+                , div [ class "uk-form-control"] 
+                    [ textarea 
+                        [ class ""
+                        , id "meetup-description"
+                        ] []
+                    ]
+                ]
+            , button [ class "uk-button uk-button-primary uk-float-right"] [ text "Create"]
+            ]
+        ]
