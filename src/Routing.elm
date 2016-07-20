@@ -9,6 +9,7 @@ import UrlParser exposing (..)
 type Route
     = NotFoundRoute 
     | MeetupsRoute
+    | CreateMeetupRoute
     | MeetupRoute Int
 
 
@@ -25,6 +26,7 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ format MeetupsRoute (s "") 
+        , format CreateMeetupRoute ( s "create")
         , format MeetupsRoute (s "meetups")
         , format MeetupRoute (s "meetup" </> int)
         ]

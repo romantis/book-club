@@ -3,7 +3,7 @@ module Meetups.View exposing (..)
 import Html.App as App
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
-import Html.Events exposing (onSubmit, onInput)
+import Html.Events exposing (onSubmit, onInput, onClick)
 
 import String
 import Regex exposing (regex, caseInsensitive)
@@ -129,7 +129,7 @@ searchForm =
         ] 
  
 
-viewCreate =
+createView =
     section [ class "uk-width-small-3-4 uk-container-center" ]
         [ h1 [] [ text "Create New Meetup"]
         , div [ class "uk-form uk-form-horizontal"]
@@ -192,3 +192,4 @@ viewCreate =
             , button [ class "uk-button uk-button-primary uk-float-right"] [ text "Create"]
             ]
         ]
+

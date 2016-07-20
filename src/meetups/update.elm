@@ -1,5 +1,6 @@
 module Meetups.Update exposing (..)
 
+import Navigation
 import Meetups.Model exposing (Model) 
 import Meetups.Messages exposing (Msg(..))
 import Errors.Main as Errors
