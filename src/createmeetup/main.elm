@@ -4,10 +4,73 @@ import Html exposing(..)
 import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onInput, onClick)
 
+import Meetup.Main exposing (Meetup)
+
+import Debug
+
+type alias Model = 
+    { meetup : Meetup
+    --, validated : Bool
+    }
+
+init =
+    Model (Meetup 0 "" "" "" 0 0 "" [])
+
+type Msg 
+    = NewMember
+    | InputTitle String
+    | InputBook String
+    | InputDate String
+    | InputPlace String 
+    | InputCover String 
+    | InputDescription String
+
+
+
+update : Msg -> Model -> (Model , Cmd Msg)
+update msg model = 
+    case msg of
+        NewMember ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputTitle title ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputBook book ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputDate date  ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputPlace place  ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputCover coverUrl ->
+            ( model
+            , Cmd.none
+            )
+        
+        InputDescription description ->
+            ( model
+            , Cmd.none
+            )
+
+
 
 (=>) = (,)
 
-view =
+view :  Model -> Html Msg
+view model =
     section [ class "uk-width-small-1-2 uk-container-center uk-block uk-block-large" ]
         [ h1 [] [ text "Create New Meetup"]
         , div [ class "uk-form uk-form-horizontal"]
@@ -18,16 +81,18 @@ view =
                         [ type' "text"
                         , id "meetup-title"
                         , placeholder "meetup title"
+                        , onInput InputTitle
                         ] []
                     ]
                 ]
             , div [ class "uk-form-row"] 
-                [ label [ class "uk-form-label", for "book"] [ text "Book"]
+                [ label [ class "uk-form-label", for "book-title"] [ text "Book Title"]
                 , div [ class "uk-form-control"] 
                     [ input 
                         [ type' "text"
-                        , id "book"
-                        , placeholder "Book"
+                        , id "book-title"
+                        , placeholder "Book Title"
+                        , onInput InputBook
                         ] []
                     ]
                 ]
@@ -37,6 +102,7 @@ view =
                     [ input 
                         [ type' "date"
                         , id "meetup-date"
+                        , onInput InputDate
                         ] []
                     ]
                 ]
@@ -47,6 +113,7 @@ view =
                         [ type' "text"
                         , id "meetup-place"
                         , placeholder "Place"
+                        , onInput InputPlace
                         ] []
                     ]
                 ]
@@ -57,6 +124,7 @@ view =
                         [ type' "url"
                         , id "meetup-cover"
                         , placeholder "image url"
+                        , onInput InputCover
                         ] []
                     ]
                 ]
@@ -66,11 +134,13 @@ view =
                     [ textarea 
                         [ class "uk-width-1-1"
                         , id "meetup-description"
+                        , onInput InputDescription
                         ] []
                     ]
                 ]
             , button 
                 [ class "uk-button uk-button-primary uk-margin" 
+                , onClick NewMember
                 ] 
                 [ text "Create"]
             ]
