@@ -10,6 +10,7 @@ import Routing exposing (Route(..), routeString)
 
 import Meetups.View as Meetups
 import Meetup.Main as Meetup
+import CreateMeetup.Main as CreateMeetup
 import NotFound.Main as NotFound
 
 import Shared.Header as Header
@@ -35,7 +36,7 @@ page model =
             App.map MeetupMsg (Meetup.view model.meetup )
 
         CreateMeetupRoute ->
-            Meetups.createView
+            CreateMeetup.view
 
         NotFoundRoute ->
             NotFound.view
