@@ -27,6 +27,7 @@ type Msg
 
 
 
+
 update : Msg -> Model -> (Model , Cmd Msg)
 update msg model = 
     case msg of
@@ -66,8 +67,6 @@ update msg model =
             )
 
 
-
-(=>) = (,)
 
 view :  Model -> Html Msg
 view model =
