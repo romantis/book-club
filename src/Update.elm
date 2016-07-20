@@ -6,7 +6,7 @@ import Models exposing (Model)
 import Meetups.Update as Meetups
 import Meetup.Main as Meetup
 import Shared.Header as Header 
-
+import CreateMeetup.Main as CreateMeetup
 
 
 
@@ -48,4 +48,12 @@ update msg model =
                 , Cmd.map HeaderMsg subCmd 
                 ) 
         
+        CreateMeetupMsg subMsg ->
+            let 
+                (subModel, subCmd) = 
+                    CreateMeetup.update subMsg model.createMeetup 
+            in
+                ( {model | createMeetup = subModel}
+                , Cmd.map CreateMeetupMsg subCmd 
+                ) 
 

@@ -36,7 +36,7 @@ page model =
             App.map MeetupMsg (Meetup.view model.meetup )
 
         CreateMeetupRoute ->
-            CreateMeetup.view
+            App.map CreateMeetupMsg (CreateMeetup.view model.createMeetup)
 
         NotFoundRoute ->
             NotFound.view
