@@ -85,6 +85,11 @@ logInToggle isLogged =
     if isLogged then
         div [ class "uk-navbar-content"] 
             [ button 
+              [ class "uk-button uk-button-primary" 
+              , onClick (Navigate "create")
+              ]
+              [ text "Create"]
+            , button 
                 [ onClick ToggleLogIn
                 , class "uk-button"
                 ] 

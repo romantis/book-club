@@ -2,8 +2,8 @@ module Meetups.View exposing (..)
 
 import Html.App as App
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href)
-import Html.Events exposing (onSubmit, onInput)
+import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
+import Html.Events exposing (onSubmit, onInput, onClick)
 
 import String
 import Regex exposing (regex, caseInsensitive)
@@ -23,7 +23,7 @@ import Errors.Main as Errors
 listView :Model -> Html Msg
 listView model =
     section []
-        [ searchView 
+        [ searchView
         , headerView model.search
         , meetupsList model
         , App.map ErrMsg (Errors.view model.errors)
@@ -127,4 +127,3 @@ searchForm =
                 --    ] 
                 ] []
         ] 
- 
