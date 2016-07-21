@@ -8,6 +8,7 @@ import Update exposing (update)
 import Routing exposing (Route(..))
 import Meetups.Commands as Meetups
 import Meetup.Main as Meetup
+import CreateMeetup.Main as CreateMeetup
 
 
 
@@ -50,6 +51,8 @@ urlUpdCmd route =
             Cmd.map MeetupsMsg Meetups.fetch
         MeetupRoute id ->
             Cmd.map MeetupMsg (Meetup.fetch id)
+        CreateMeetupRoute ->
+            Cmd.map CreateMeetupMsg (CreateMeetup.getCurrentDate)
         _ ->
             Cmd.none 
 
