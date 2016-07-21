@@ -3,26 +3,35 @@ module CreateMeetup.Main exposing(..)
 import Html exposing(..)
 import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onInput, onClick)
+import Date
+import Time exposing (Time)
 
 import Meetup.Main exposing (Meetup)
 
 import Debug
 
 type alias Model = 
-    { meetup : Meetup
-    --, validated : Bool
+    { title : String
+    , cover : String
+    , description : String
+    , date : Time
+    , place : String 
+    , validated : Bool
     }
 
+
+
+init : Model
 init =
-    Model (Meetup 0 "" "" "" 0 "" [])
+    Model "" "" "" 0 "" False
 
 type Msg 
     = NewMember
     | InputTitle String
-    | InputDate String
-    | InputPlace String 
     | InputCover String 
     | InputDescription String
+    | InputDate String
+    | InputPlace String 
 
 
 
@@ -31,34 +40,49 @@ update : Msg -> Model -> (Model , Cmd Msg)
 update msg model = 
     case msg of
         NewMember ->
-            ( model
+            ( Debug.log "meetup to add: " model
             , Cmd.none
             )
         
         InputTitle title ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputDate date  ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputPlace place  ->
-            ( model
+            ({ model | title = title }
             , Cmd.none
             )
         
         InputCover coverUrl ->
-            ( model
+            ({ model | cover = coverUrl }
             , Cmd.none
             )
         
         InputDescription description ->
-            ( model
+            ({ model | description = description }
             , Cmd.none
             )
+        
+        InputDate strDate  ->
+            let 
+                result = 
+                    Date.fromString strDate
+                
+                --It's actually TIME
+                date = 
+                    case result of 
+                        Ok date ->
+                            Date.toTime date 
+                        Err _ ->
+                            toFloat 0
+                        
+            in
+                ({ model | date = date}
+                , Cmd.none
+                )
+        
+        InputPlace place  ->
+            ({ model | place = place }
+            , Cmd.none
+            )
+        
+        
 
 
 
