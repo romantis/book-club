@@ -14,12 +14,11 @@ type alias Model =
     }
 
 init =
-    Model (Meetup 0 "" "" "" 0 0 "" [])
+    Model (Meetup 0 "" "" "" 0 "" [])
 
 type Msg 
     = NewMember
     | InputTitle String
-    | InputBook String
     | InputDate String
     | InputPlace String 
     | InputCover String 
@@ -37,11 +36,6 @@ update msg model =
             )
         
         InputTitle title ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputBook book ->
             ( model
             , Cmd.none
             )
@@ -81,17 +75,6 @@ view model =
                         , id "meetup-title"
                         , placeholder "meetup title"
                         , onInput InputTitle
-                        ] []
-                    ]
-                ]
-            , div [ class "uk-form-row"] 
-                [ label [ class "uk-form-label", for "book-title"] [ text "Book Title"]
-                , div [ class "uk-form-control"] 
-                    [ input 
-                        [ type' "text"
-                        , id "book-title"
-                        , placeholder "Book Title"
-                        , onInput InputBook
                         ] []
                     ]
                 ]
