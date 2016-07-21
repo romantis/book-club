@@ -1,12 +1,16 @@
 module CreateMeetup.Main exposing(..)
 
 import Html exposing(..)
-import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, tabindex, autofocus, href, for, id)
+import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, for, id)
 import Html.Events exposing (onInput, onClick)
-import Date
+import Date exposing (Date)
+import String
 import Time exposing (Time)
+import Task
 
-import Meetup.Main exposing (Meetup)
+import Date.Format as Date
+
+--import Meetup.Main exposing (Meetup)
 
 import Debug
 
@@ -14,8 +18,10 @@ type alias Model =
     { title : String
     , cover : String
     , description : String
-    , date : Time
     , place : String 
+    , date : Time
+    --I need this for validation inputDate
+    , now : Date
     , validated : Bool
     }
 
@@ -23,15 +29,18 @@ type alias Model =
 
 init : Model
 init =
-    Model "" "" "" 0 "" False
+    Model "" "" "" "" 0 ((Date.fromTime << toFloat) 0) False
+
 
 type Msg 
     = NewMember
     | InputTitle String
     | InputCover String 
     | InputDescription String
-    | InputDate String
     | InputPlace String 
+    | InputDate String
+    | NowDateSuccess Date
+    | NowDateFail String
 
 
 
@@ -40,10 +49,18 @@ update : Msg -> Model -> (Model , Cmd Msg)
 update msg model = 
     case msg of
         NewMember ->
-            ( Debug.log "meetup to add: " model
+            ( Debug.log "meetup to add: " {model | validated = validate model}
             , Cmd.none
             )
+
+        NowDateFail _ ->
+            ( model, Cmd.none)
         
+        NowDateSuccess date ->
+            ( {model | now = date}
+            , Cmd.none
+            )
+
         InputTitle title ->
             ({ model | title = title }
             , Cmd.none
@@ -107,9 +124,15 @@ view model =
                 , div [ class "uk-form-control"] 
                     [ input 
                         [ type' "date"
+                        , Attr.min (Date.format "%Y-%m-%d" model.now)
                         , id "meetup-date"
                         , onInput InputDate
                         ] []
+                    --, input 
+                    --    [ type' "time"
+                    --    , id "meetup-date"
+                    --    --, onInput InputTime
+                    --    ] []
                     ]
                 ]
             , div [ class "uk-form-row"] 
@@ -152,3 +175,21 @@ view model =
             ]
         ]
 
+
+-- Helper functions
+
+strValid : String -> Bool
+strValid s =
+    String.length s > 2
+
+validate : Model -> Bool
+validate { title, cover, description, date, place } =
+    strValid title 
+    && strValid cover
+    && strValid description 
+    && strValid place
+
+
+getCurrentDate : Cmd Msg
+getCurrentDate = 
+    Task.perform NowDateFail NowDateSuccess Date.now
