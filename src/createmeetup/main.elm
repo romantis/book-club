@@ -1,29 +1,46 @@
 module CreateMeetup.Main exposing(..)
 
 import Html exposing(..)
-import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, tabindex, autofocus, href, for, id)
+import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, for, id)
 import Html.Events exposing (onInput, onClick)
+import Date exposing (Date)
+import String
+import Time exposing (Time)
+import Task
 
-import Meetup.Main exposing (Meetup)
+import Date.Format as Date
+
+--import Meetup.Main exposing (Meetup)
 
 import Debug
 
 type alias Model = 
-    { meetup : Meetup
-    --, validated : Bool
+    { title : String
+    , cover : String
+    , description : String
+    , place : String 
+    , date : Time
+    --I need this for validation inputDate
+    , now : Date
+    , validated : Bool
     }
 
+
+
+init : Model
 init =
-    Model (Meetup 0 "" "" "" 0 0 "" [])
+    Model "" "" "" "" 0 ((Date.fromTime << toFloat) 0) False
+
 
 type Msg 
     = NewMember
     | InputTitle String
-    | InputBook String
-    | InputDate String
-    | InputPlace String 
     | InputCover String 
     | InputDescription String
+    | InputPlace String 
+    | InputDate String
+    | NowDateSuccess Date
+    | NowDateFail String
 
 
 
@@ -32,39 +49,57 @@ update : Msg -> Model -> (Model , Cmd Msg)
 update msg model = 
     case msg of
         NewMember ->
-            ( model
+            ( Debug.log "meetup to add: " {model | validated = validate model}
             , Cmd.none
             )
+
+        NowDateFail _ ->
+            ( model, Cmd.none)
         
+        NowDateSuccess date ->
+            ( {model | now = date}
+            , Cmd.none
+            )
+
         InputTitle title ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputBook book ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputDate date  ->
-            ( model
-            , Cmd.none
-            )
-        
-        InputPlace place  ->
-            ( model
+            ({ model | title = title }
             , Cmd.none
             )
         
         InputCover coverUrl ->
-            ( model
+            ({ model | cover = coverUrl }
             , Cmd.none
             )
         
         InputDescription description ->
-            ( model
+            ({ model | description = description }
             , Cmd.none
             )
+        
+        InputDate strDate  ->
+            let 
+                result = 
+                    Date.fromString strDate
+                
+                --It's actually TIME
+                date = 
+                    case result of 
+                        Ok date ->
+                            Date.toTime date 
+                        Err _ ->
+                            toFloat 0
+                        
+            in
+                ({ model | date = date}
+                , Cmd.none
+                )
+        
+        InputPlace place  ->
+            ({ model | place = place }
+            , Cmd.none
+            )
+        
+        
 
 
 
@@ -85,24 +120,19 @@ view model =
                     ]
                 ]
             , div [ class "uk-form-row"] 
-                [ label [ class "uk-form-label", for "book-title"] [ text "Book Title"]
-                , div [ class "uk-form-control"] 
-                    [ input 
-                        [ type' "text"
-                        , id "book-title"
-                        , placeholder "Book Title"
-                        , onInput InputBook
-                        ] []
-                    ]
-                ]
-            , div [ class "uk-form-row"] 
                 [ label [ class "uk-form-label", for "meetup-date"] [ text "Date"]
                 , div [ class "uk-form-control"] 
                     [ input 
                         [ type' "date"
+                        , Attr.min (Date.format "%Y-%m-%d" model.now)
                         , id "meetup-date"
                         , onInput InputDate
                         ] []
+                    --, input 
+                    --    [ type' "time"
+                    --    , id "meetup-date"
+                    --    --, onInput InputTime
+                    --    ] []
                     ]
                 ]
             , div [ class "uk-form-row"] 
@@ -145,3 +175,21 @@ view model =
             ]
         ]
 
+
+-- Helper functions
+
+strValid : String -> Bool
+strValid s =
+    String.length s > 2
+
+validate : Model -> Bool
+validate { title, cover, description, date, place } =
+    strValid title 
+    && strValid cover
+    && strValid description 
+    && strValid place
+
+
+getCurrentDate : Cmd Msg
+getCurrentDate = 
+    Task.perform NowDateFail NowDateSuccess Date.now
