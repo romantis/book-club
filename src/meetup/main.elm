@@ -23,7 +23,6 @@ type alias Meetup =
     , title : String
     , cover : String
     , description : String
-    , bookId : Int
     , date : Time
     , place : String
     , members : List Int 
@@ -95,7 +94,7 @@ meetupView meetup errors=
             , text " | "
             , text meetup.place
             , text " | "
-            , a [] [ text <| "Some Book: " ++ toString meetup.bookId]
+            , a [] [ text <| "Some Book: "]
             ]
         , img 
             [ src meetup.cover
@@ -169,12 +168,11 @@ fetchUrl id =
 
 memberDecoder : Decode.Decoder Meetup
 memberDecoder =
-    Decode.object8 Meetup
+    Decode.object7 Meetup
         ("id" := Decode.int)
         ("title" := Decode.string)
         ("cover" := Decode.string)
         ("description" := Decode.string)
-        ("bookId" := Decode.int)
         ("date" :=Decode.float)
         ("place" := Decode.string)
         ("members" := Decode.list Decode.int)
