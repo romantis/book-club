@@ -33,7 +33,7 @@ init =
 
 
 type Msg 
-    = NewMember
+    = CreateMeetup
     | InputTitle String
     | InputCover String 
     | InputDescription String
@@ -48,7 +48,7 @@ type Msg
 update : Msg -> Model -> (Model , Cmd Msg)
 update msg model = 
     case msg of
-        NewMember ->
+        CreateMeetup ->
             ( Debug.log "meetup to add: " {model | validated = validate model}
             , Cmd.none
             )
@@ -169,7 +169,7 @@ view model =
                 ]
             , button 
                 [ class "uk-button uk-button-primary uk-margin" 
-                , onClick NewMember
+                , onClick CreateMeetup
                 ] 
                 [ text "Create"]
             ]
