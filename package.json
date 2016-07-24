@@ -9,8 +9,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "api": "node api.js",
-    "dev": "webpack-dev-server --port 3000",
+    "api": "json-server db.json -p 4000",
     "start": "webpack-dev-server --port 3000"
   },
   "devDependencies": {
