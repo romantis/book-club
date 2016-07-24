@@ -12,7 +12,6 @@ import Time exposing (Time)
 import String
 import Errors.Main as Errors
 
-import Debug
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
@@ -25,7 +24,6 @@ type alias Meetup =
     , description : String
     , date : Time
     , place : String
-    , members : List Int 
     }
 
 
@@ -82,7 +80,7 @@ view model =
                 ]
             
         Just meetup ->
-            meetupView meetup (Debug.log "" model.errors)
+            meetupView meetup (model.errors)
 
 
 meetupView : Meetup -> Errors.Model -> Html Msg
@@ -98,11 +96,11 @@ meetupView meetup errors=
             ]
         , img 
             [ src meetup.cover
-            , style 
-                [ "max-width"=>"30%"]
+            , class "uk-margin-top"
+            -- , style 
+            --     [ "max-width"=>"30%"]
             ] []
         , p [ class "uk-article-lead"] [ text meetup.description]
-        , p [] [ text <| toString meetup.members ] 
         , App.map ErrMsg (Errors.view errors)
         ] 
 
@@ -168,14 +166,13 @@ fetchUrl id =
 
 memberDecoder : Decode.Decoder Meetup
 memberDecoder =
-    Decode.object7 Meetup
+    Decode.object6 Meetup
         ("id" := Decode.int)
         ("title" := Decode.string)
         ("cover" := Decode.string)
         ("description" := Decode.string)
         ("date" :=Decode.float)
         ("place" := Decode.string)
-        ("members" := Decode.list Decode.int)
 
 sub : Model -> Sub Msg 
 sub model =
