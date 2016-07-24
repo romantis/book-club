@@ -12,7 +12,6 @@ import Time exposing (Time)
 import String
 import Errors.Main as Errors
 
-import Debug
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
@@ -81,7 +80,7 @@ view model =
                 ]
             
         Just meetup ->
-            meetupView meetup (Debug.log "" model.errors)
+            meetupView meetup (model.errors)
 
 
 meetupView : Meetup -> Errors.Model -> Html Msg
@@ -97,8 +96,9 @@ meetupView meetup errors=
             ]
         , img 
             [ src meetup.cover
-            , style 
-                [ "max-width"=>"30%"]
+            , class "uk-margin-top"
+            -- , style 
+            --     [ "max-width"=>"30%"]
             ] []
         , p [ class "uk-article-lead"] [ text meetup.description]
         , App.map ErrMsg (Errors.view errors)
