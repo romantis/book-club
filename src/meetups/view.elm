@@ -84,13 +84,8 @@ meetupThumView meetup =
             , p [] [text meetup.description]
             , button [ class "uk-button uk-button-primary uk-float-right"] 
                 [ text "Join"]
-            , membersComming meetup.members 
             ]
         ]
-
-membersComming : List Int -> Html Msg
-membersComming members =
-    span [] [ text (String.join " | " (List.map toString members))]
 
 
 
