@@ -4,28 +4,40 @@
       "id": 1,
       "title": "Harry Potter",
       "cover": "http://lorempixel.com/400/200/abstract/5",
-      "description" : "some awesome event in some awesome place",
+      "description": "some awesome event in some awesome place",
       "date": 1467707918639,
       "place": "Kyiv, Ukraine, Some Cafe",
-      "members": [1,3,3]
+      "members": [
+        1,
+        3,
+        3
+      ]
     },
     {
       "id": 2,
       "title": "Lord of the Rings",
       "cover": "http://lorempixel.com/400/200/abstract/6",
-      "description" : "some awesome event in some awesome place",
+      "description": "some awesome event in some awesome place",
       "date": 1467707818639,
       "place": "Odessa, Ukraine, Another Bar",
-      "members": [4,5,6]
+      "members": [
+        4,
+        5,
+        6
+      ]
     },
     {
       "id": 3,
       "title": "1962",
       "cover": "http://lorempixel.com/400/200/abstract/7",
-      "description" : "some awesome event in some awesome place",
+      "description": "some awesome event in some awesome place",
       "date": 1467707898639,
       "place": "Lviv, Ukraine, Another Bar",
-      "members": [7,8,9]
+      "members": [
+        7,
+        8,
+        9
+      ]
     }
   ]
 }

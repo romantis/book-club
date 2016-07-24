@@ -10,6 +10,7 @@ import Task exposing (Task)
 import Http
 import Json.Decode as Decode exposing ((:=))
 import Json.Encode as Encode
+import Navigation
 
 import Date.Format as Date
 -- import Debug
@@ -127,7 +128,9 @@ update msg ({title, cover, description, place, date, now, validated} as model) =
             ( model, Cmd.none)
         
         CreateSuccess _ ->
-            ( model, Cmd.none)
+            ( init
+            , Navigation.newUrl "/"
+            )
         
 
 
@@ -157,11 +160,6 @@ view model =
                         , id "meetup-date"
                         , onInput InputDate
                         ] []
-                    --, input 
-                    --    [ type' "time"
-                    --    , id "meetup-date"
-                    --    --, onInput InputTime
-                    --    ] []
                     ]
                 ]
             , div [ class "uk-form-row"] 
@@ -227,6 +225,13 @@ getCurrentDate =
 
 -- Commands 
 
+createNewMeetup : NewMeetup -> Cmd Msg
+createNewMeetup meetup = 
+    createMeetupTask meetup
+        |> Task.perform CreateFail CreateSuccess
+
+
+
 createMeetupTask : NewMeetup -> Task Http.Error NewMeetup
 createMeetupTask meetup = 
     let 
@@ -246,10 +251,6 @@ createMeetupTask meetup =
             |> Http.fromJson meetupDecoder
 
 
-createNewMeetup : NewMeetup -> Cmd Msg
-createNewMeetup meetup = 
-    createMeetupTask meetup
-        |> Task.perform CreateFail CreateSuccess
 
 createMeetupUrl : String
 createMeetupUrl = 
