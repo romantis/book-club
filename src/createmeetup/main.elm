@@ -6,13 +6,26 @@ import Html.Events exposing (onInput, onClick)
 import Date exposing (Date)
 import String
 import Time exposing (Time)
-import Task
+import Task exposing (Task)
+import Http
+import Json.Decode as Decode exposing ((:=))
+import Json.Encode as Encode
 
 import Date.Format as Date
+-- import Debug
 
 --import Meetup.Main exposing (Meetup)
 
-import Debug
+(=>) : a -> b -> ( a, b )
+(=>) = (,)
+
+type alias NewMeetup =
+    { title : String
+    , cover : String
+    , description : String
+    , place : String 
+    , date : Time
+    }
 
 type alias Model = 
     { title : String
@@ -20,7 +33,6 @@ type alias Model =
     , description : String
     , place : String 
     , date : Time
-    --I need this for validation inputDate
     , now : Date
     , validated : Bool
     }
@@ -41,17 +53,29 @@ type Msg
     | InputDate String
     | NowDateSuccess Date
     | NowDateFail String
+    | CreateFail Http.Error
+    | CreateSuccess NewMeetup
 
 
 
 
 update : Msg -> Model -> (Model , Cmd Msg)
-update msg model = 
+update msg ({title, cover, description, place, date, now, validated} as model) = 
     case msg of
         CreateMeetup ->
-            ( Debug.log "meetup to add: " {model | validated = validate model}
-            , Cmd.none
-            )
+            let 
+                isValidated =
+                    validate model
+
+                cmd = 
+                    if isValidated then
+                        createNewMeetup (NewMeetup title cover description place date) 
+                    else 
+                        Cmd.none
+            in 
+                ( {model | validated = isValidated}
+                , cmd
+                )
 
         NowDateFail _ ->
             ( model, Cmd.none)
@@ -99,6 +123,11 @@ update msg model =
             , Cmd.none
             )
         
+        CreateFail _ ->
+            ( model, Cmd.none)
+        
+        CreateSuccess _ ->
+            ( model, Cmd.none)
         
 
 
@@ -193,3 +222,58 @@ validate { title, cover, description, date, place } =
 getCurrentDate : Cmd Msg
 getCurrentDate = 
     Task.perform NowDateFail NowDateSuccess Date.now
+
+
+
+-- Commands 
+
+createMeetupTask : NewMeetup -> Task Http.Error NewMeetup
+createMeetupTask meetup = 
+    let 
+        body =
+            meetupEncoded meetup 
+                |> Encode.encode 0
+                |> Http.string
+
+        config =
+            { verb = "POST"
+            , headers = ["Content-Type" => "application/json"]
+            , url = createMeetupUrl
+            , body = body
+            } 
+    in 
+        Http.send Http.defaultSettings config
+            |> Http.fromJson meetupDecoder
+
+
+createNewMeetup : NewMeetup -> Cmd Msg
+createNewMeetup meetup = 
+    createMeetupTask meetup
+        |> Task.perform CreateFail CreateSuccess
+
+createMeetupUrl : String
+createMeetupUrl = 
+    "http://localhost:4000/meetups"
+
+meetupDecoder : Decode.Decoder NewMeetup
+meetupDecoder =
+    Decode.object5 NewMeetup
+        ("title" := Decode.string) 
+        ("cover" := Decode.string)
+        ("description" := Decode.string)
+        ("place" := Decode.string)
+        ("date" := Decode.float)
+
+
+meetupEncoded : NewMeetup -> Encode.Value 
+meetupEncoded { title, cover, description, place, date } = 
+    let
+        list = 
+            [ "title" => Encode.string title
+            , "cover" => Encode.string cover
+            , "description" => Encode.string description
+            , "place" => Encode.string place
+            , "date" => Encode.float date
+            ]
+    in 
+        Encode.object list 
