@@ -11,6 +11,7 @@ import Date exposing (Date, Month(..))
 import Time exposing (Time)
 import String
 import Errors.Main as Errors
+import Date.Format as Date
 
 
 (=>) : a -> b -> ( a, b )
@@ -82,71 +83,42 @@ view model =
         Just meetup ->
             meetupView meetup (model.errors)
 
-
 meetupView : Meetup -> Errors.Model -> Html Msg
 meetupView meetup errors=
-    section [ class " uk-article uk-width-small-3-4 uk-container-center uk-block"]
-        [ h1 [ class "uk-article-title"] [ text meetup.title]
-        , div [ class "uk-article-meta "] 
-            [ text <| formatDate meetup.date
-            , text " | "
-            , text meetup.place
-            , text " | "
-            , a [] [ text <| "Some Book: "]
+    section 
+        [ style [ "min-height" => "calc(100vh - 165px)"]]
+        [ meetupHeaderView
+            [ h1 [ class "uk-heading-large"] 
+                [ text meetup.title
+                , span [class "uk-text-primary uk-margin-left"] [text "Meetup"] 
+                ]
+            , div [ class "uk-text-large"] 
+                [ i [class "uk-icon-calendar uk-margin-small-right"] []
+                , text <| Date.format "%B %e %Y at %k:%M" (Date.fromTime meetup.date)
+                ]
             ]
-        , img 
-            [ src meetup.cover
-            , class "uk-margin-top"
-            -- , style 
-            --     [ "max-width"=>"30%"]
-            ] []
-        , p [ class "uk-article-lead"] [ text meetup.description]
+            
+        , div [class "uk-width-small-1-2 uk-container-center uk-block"]
+            [ h2 [] [ text "Meetup place"] 
+            , p [] [text meetup.place]
+            , h2 [class ""] [ text "Description"]
+            , p [ class "" ]
+                [ text meetup.description
+                ] 
+            ] 
+            
         , App.map ErrMsg (Errors.view errors)
         ] 
 
 
-formatDate : Time -> String
-formatDate t =
-    let 
-        date = Date.fromTime t
-        day = Date.day date
-        month = whatMonth <| Date.month date
-        year = Date.year date 
-        hour = Date.hour date 
-        minute = Date.minute date
-    in
-        [day, year, hour, minute]  
-            |> List.map toString   
-            |> String.join " "
-            |> (++) (month ++ " ")
 
-whatMonth : Date.Month -> String
-whatMonth m = 
-    case m of 
-        Jan ->
-            "Jan"
-        Feb ->
-            "Feb"
-        Mar ->
-            "Mar"
-        Apr ->
-            "Apr"
-        May ->
-            "May"
-        Jun ->
-            "Jun"
-        Jul ->
-            "Jul"
-        Aug ->
-            "Aug"
-        Sep ->
-            "Sep"
-        Oct ->
-            "Oct"
-        Nov ->
-            "Nov"
-        Dec ->
-            "Dec"
+meetupHeaderView content =
+    header 
+        [ style [ "height" => "30vh"]
+        , class "bg-carbon-fibre uk-contrast uk-flex uk-flex-center uk-flex-middle uk-flex-column"
+        ] 
+        content
+
 
 
 --  Commands 

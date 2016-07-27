@@ -29,3 +29,17 @@ h3 {font-size: 1.44em;}
 h4 {font-size: 1.2em;}
 
 small, .font_small {font-size: 0.833em;}
+
+
+
+/*Bpckgrounds*/
+
+.bg-carbon-fibre {
+  background:
+      radial-gradient(darkslategray 15%, transparent 16%) 0 0,
+      radial-gradient(darkslategray 15%, transparent 16%) 8px 8px,
+      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+      radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+      background-color:#282828;
+      background-size:16px 16px;
+}
