@@ -137,7 +137,9 @@ update msg ({title, cover, description, place, date, now, validated} as model) =
 
 view :  Model -> Html Msg
 view model =
-    section [ class "uk-width-small-1-2 uk-container-center uk-block uk-block-large" ]
+    section 
+        [  class "uk-width-small-1-2 uk-container-center uk-block uk-block-large bc-min-height" 
+        ]
         [ h1 [] [ text "Create New Meetup"]
         , div [ class "uk-form uk-form-horizontal"]
             [ div [ class "uk-form-row"] 

@@ -9,7 +9,6 @@ import Task
 import Json.Decode as Decode exposing ((:=), andThen)
 import Date exposing (Date, Month(..))
 import Time exposing (Time)
-import String
 import Errors.Main as Errors
 import Date.Format as Date
 
@@ -86,7 +85,7 @@ view model =
 meetupView : Meetup -> Errors.Model -> Html Msg
 meetupView meetup errors=
     section 
-        [ style [ "min-height" => "calc(100vh - 165px)"]]
+        [ class "bc-min-height"]
         [ meetupHeaderView
             [ h1 [ class "uk-heading-large"] 
                 [ text meetup.title
@@ -94,7 +93,7 @@ meetupView meetup errors=
                 ]
             , div [ class "uk-text-large"] 
                 [ i [class "uk-icon-calendar uk-margin-small-right"] []
-                , text <| Date.format "%B %e %Y at %k:%M" (Date.fromTime meetup.date)
+                , text <| Date.format "%B %e, %Y at %k:%M" (Date.fromTime meetup.date)
                 ]
             ]
             

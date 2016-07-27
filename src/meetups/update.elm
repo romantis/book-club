@@ -20,6 +20,11 @@ update msg model =
                 } 
             , Cmd.none
             )
+        
+        Navigate url ->
+            ( model
+            , Navigation.newUrl url
+            )
 
         SearchQuery sq -> 
             ( {model | search = sq}

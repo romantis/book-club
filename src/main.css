@@ -32,6 +32,14 @@ small, .font_small {font-size: 0.833em;}
 
 
 
+
+
+.bc-min-height {
+  /* header + footer = 165px */
+    min-height: calc(100vh - 165px);
+}
+
+
 /*Bpckgrounds*/
 
 .bg-carbon-fibre {
@@ -43,3 +51,5 @@ small, .font_small {font-size: 0.833em;}
       background-color:#282828;
       background-size:16px 16px;
 }
+
+
