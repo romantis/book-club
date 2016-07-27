@@ -11,7 +11,7 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "api": "json-server db.json -p 4000",
-    "start": "webpack-dev-server --port 3000"
+    "start": "webpack-dev-server"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",
