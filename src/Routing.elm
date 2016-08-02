@@ -4,7 +4,6 @@ import String
 import Navigation
 import UrlParser exposing (..)
 
--- import Debug
 
 type Route
     = NotFoundRoute 
@@ -46,7 +45,7 @@ parser =
 
 routeFromResult : Result String Route -> Route
 routeFromResult result =
-    case Debug.log "" result of
+    case result of
         Ok route ->
             route
 
