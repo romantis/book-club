@@ -14,6 +14,7 @@ import Meetups.Model exposing (Model)
 import Meetups.Messages exposing (Msg(..))
 
 
+import Shared.Helpers exposing (hrefClick)
 import Errors.Main as Errors
 
 
@@ -74,32 +75,37 @@ meetupsList model =
 
 meetupThumView : Meetup -> Html Msg
 meetupThumView meetup =
-    div [ class "uk-width-medium-1-2 uk-width-large-1-3 uk-animation-fade uk-margin-bottom" 
-        ]
-        [ div [ class "uk-panel uk-panel-box" ] 
-            [ div 
-                [ class "uk-panel-teaser"] 
-                [ img [src meetup.cover] []]
-            ,  h3 [class "uk-panel-title"] 
-                [ a [ onClick (Navigate <|  "#meetup/" ++ toString meetup.id) 
-                    -- , href <| "#meetup/" ++ toString meetup.id 
-                    ]  
-                    [text meetup.title]
-                ]
-            , hr [ class "uk-margin-remove"] []
-            , p 
-                [ class "uk-text-muted uk-margin-remove"] 
-                [ i [class "uk-icon-calendar uk-margin-small-right"] []
-                , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
-                ]
-            , p [] [text meetup.description]
-            , button 
-                [ class "uk-button uk-button-link uk-float-right"
-                , onClick (Navigate <|  "#meetup/" ++ toString meetup.id)
-                ] 
-                [ text "Details"]
+    let
+        url = 
+             "#" ++ "meetup/" ++ toString meetup.id
+    in
+        div [ class "uk-width-medium-1-2 uk-width-large-1-3 uk-animation-fade uk-margin-bottom" 
             ]
-        ]
+            [ div [ class "uk-panel uk-panel-box" ] 
+                [ div 
+                    [ class "uk-panel-teaser"] 
+                    [ img [src meetup.cover] []]
+                ,  h3 [class "uk-panel-title"] 
+                    [ a [ hrefClick Navigate url 
+                        , href url 
+                        ]  
+                        [text meetup.title]
+                    ]
+                , hr [ class "uk-margin-remove"] []
+                , p 
+                    [ class "uk-text-muted uk-margin-remove"] 
+                    [ i [class "uk-icon-calendar uk-margin-small-right"] []
+                    , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
+                    ]
+                , p [] [text meetup.description]
+                , button 
+                    [ class "uk-button uk-button-link uk-float-right"
+                    , hrefClick Navigate url 
+                    , href url
+                    ] 
+                    [ text "Details"]
+                ]
+            ]
 
 
 
