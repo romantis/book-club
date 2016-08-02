@@ -98,8 +98,8 @@ meetupThumView meetup =
                     , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
                     ]
                 , p [] [text meetup.description]
-                , button 
-                    [ class "uk-button uk-button-link uk-float-right"
+                , a 
+                    [ class "uk-float-right"
                     , hrefClick Navigate url 
                     , href url
                     ] 
