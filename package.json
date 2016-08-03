@@ -1,17 +1,22 @@
 {
-  "name": "elm-tutorial-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "api.js",
-  "dependencies": {
-    "json-server": "^0.8.16",
-    "uikit": "^2.26.4"
+  "name": "elm-starter",
+  "version": "0.2.0",
+  "description": "elm starter project for building web apps",
+  "author": "Roman Tischenko",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/romantis/elm-starter.git"
   },
+  "license": "MIT",
+  "main": "src/index.js",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
     "api": "json-server db.json -p 4000",
     "start": "webpack-dev-server"
+  },
+  "dependencies": {
+    "uikit": "^2.26.4"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",
@@ -25,11 +30,5 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "author": "romantis",
-  "license": "MIT"
+  }
 }
