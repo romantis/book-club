@@ -3,6 +3,7 @@ module Meetups.Update exposing (..)
 import Navigation
 import Meetups.Model exposing (Model) 
 import Meetups.Messages exposing (Msg(..))
+import Shared.RandomColor as RColor
 import Errors.Main as Errors
 
 
@@ -35,6 +36,16 @@ update msg model =
             ( model
             , Cmd.none
             )
+        
+        
+        RColorMsg subMsg ->
+            let
+                (subModel, subCmd) = 
+                    RColor.update subMsg model.rColor
+            in 
+                ( { model | rColor = subModel }
+                , Cmd.map RColorMsg subCmd
+                )
 
         ErrMsg subMsg ->
             let 
