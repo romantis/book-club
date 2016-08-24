@@ -6,6 +6,7 @@ import Html.Attributes as Attr exposing (class, style, src, type', placeholder, 
 import Html.Events exposing (onSubmit, onInput, onClick)
 
 import Date
+import String
 import Date.Format as Date
 import Regex exposing (regex, caseInsensitive)
 
@@ -16,7 +17,6 @@ import Meetups.Messages exposing (Msg(..))
 
 import Shared.Helpers exposing (hrefClick)
 import Errors.Main as Errors
-
 
 
 
@@ -63,18 +63,18 @@ meetupsList : Model -> Html Msg
 meetupsList model = 
     section [ class "uk-width-small-3-4 uk-container-center uk-grid"] <|
         if model.search == "" then 
-            (List.map meetupThumView model.meetups )
+            (List.map (meetupThumView model.rColor) model.meetups )
         else 
             model.meetups
                 |> List.filter (\s -> Regex.contains (caseInsensitive <| regex model.search) s.title)
-                |> List.map meetupThumView
+                |> List.map (meetupThumView model.rColor)
 
 
 
 
 
-meetupThumView : Meetup -> Html Msg
-meetupThumView meetup =
+meetupThumView : String -> Meetup  -> Html Msg
+meetupThumView rColor meetup =
     let
         url = 
              "#" ++ "meetup/" ++ toString meetup.id
@@ -83,21 +83,26 @@ meetupThumView meetup =
             ]
             [ div [ class "uk-panel uk-panel-box" ] 
                 [ div 
-                    [ class "uk-panel-teaser"] 
-                    [ img [src meetup.cover] []]
-                ,  h3 [class "uk-panel-title"] 
-                    [ a [ hrefClick Navigate url 
-                        , href url 
-                        ]  
-                        [text meetup.title]
+                    [ class "uk-panel-teaser bg-carbon-fibre uk-vertical-align"
+                    , style 
+                        [ "background" => ("linear-gradient(transparent 60%, black)," ++  rColor)
+                        , "height" => "200px"
+                        ]
+                    ] 
+                    [ h3 [class "uk-panel-title uk-contrast uk-margin-left uk-vertical-align-bottom"] 
+                        [ a [ hrefClick Navigate url 
+                            , href url 
+                            ]  
+                            [text meetup.title]
+                        ]
                     ]
-                , hr [ class "uk-margin-remove"] []
+                -- , hr [ class "uk-margin-remove"] []
                 , p 
                     [ class "uk-text-muted uk-margin-remove"] 
                     [ i [class "uk-icon-calendar uk-margin-small-right"] []
                     , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
                     ]
-                , p [] [text meetup.description]
+                , p [] [text ((String.left 100 meetup.description) ++ " ...") ]
                 , a 
                     [ class "uk-float-right"
                     , hrefClick Navigate url 
