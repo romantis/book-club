@@ -6,6 +6,7 @@ import Html.Attributes as Attr exposing (class, style, src, type', placeholder, 
 import Html.Events exposing (onSubmit, onInput, onClick)
 
 import Date
+import Time
 import String
 import Date.Format as Date
 import Regex exposing (regex, caseInsensitive)
@@ -14,7 +15,7 @@ import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
 import Meetups.Messages exposing (Msg(..))
 
-
+import Shared.RandomColor exposing (colorList, getColor)
 import Shared.Helpers exposing (hrefClick)
 import Errors.Main as Errors
 
@@ -63,21 +64,25 @@ meetupsList : Model -> Html Msg
 meetupsList model = 
     section [ class "uk-width-small-3-4 uk-container-center uk-grid"] <|
         if model.search == "" then 
-            (List.map (meetupThumView model.rColor) model.meetups )
+            (List.map meetupThumView model.meetups)
         else 
             model.meetups
                 |> List.filter (\s -> Regex.contains (caseInsensitive <| regex model.search) s.title)
-                |> List.map (meetupThumView model.rColor)
+                |> List.map meetupThumView
 
 
 
 
 
-meetupThumView : String -> Meetup  -> Html Msg
-meetupThumView rColor meetup =
+meetupThumView : Meetup  -> Html Msg
+meetupThumView meetup =
     let
         url = 
              "#" ++ "meetup/" ++ toString meetup.id
+        rColor =
+            List.length colorList
+                |> (%) (Time.inMilliseconds meetup.date |> round)
+                |> getColor
     in
         div [ class "uk-width-medium-1-2 uk-width-large-1-3 uk-animation-fade uk-margin-bottom" 
             ]
