@@ -9,13 +9,11 @@ import Meetup.Main exposing (Meetup, memberDecoder)
 import Meetups.Messages exposing (Msg(..))
 import Errors.Main as Errors
 
-import Shared.RandomColor as RColor exposing (randomColor)
 
 
 commands = 
     Cmd.batch
         [ fetch
-        , Cmd.map RColorMsg randomColor
         ]
 
 
