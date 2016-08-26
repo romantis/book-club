@@ -10,6 +10,7 @@ import Time
 import String
 import Date.Format as Date
 import Regex exposing (regex, caseInsensitive)
+import Color
 
 import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
@@ -87,18 +88,39 @@ meetupThumView meetup =
             ]
             [ div [ class "uk-panel uk-panel-box" ] 
                 [ div 
-                    [ class "uk-panel-teaser bg-carbon-fibre uk-vertical-align"
+                    [ class "uk-panel-teaser"
                     , style 
-                        [ "background" => ("linear-gradient(transparent 60%, black)," ++  rColor)
+                        [ "background" => ("linear-gradient("++rColor++", black)" )
+                        -- , "display" => "flex"
+                        -- , "flex-direction" => "row"
                         , "height" => "200px"
                         ]
                     ] 
-                    [ h3 [class "uk-panel-title uk-contrast uk-margin-left uk-vertical-align-bottom"] 
+                    [ h3 
+                        [] 
                         [ a [ hrefClick Navigate url 
-                            , href url 
+                            , href url
+                            , style 
+                                [ "font-size" => "1.2em"
+                                , "color" =>  rColor
+                                , "background" => "white"
+                                , "text-shadow" => "1px 1px 1px black"
+                                , "padding" => "0 .5em"
+                                ] 
                             ]  
                             [ text meetup.title ]
                         ]
+                    , i 
+                        [ style 
+                            ["margin" => "0 0 0.5em 1em"
+                            , "font-size" => "1.2rem"
+                            , "position" => "absolute"
+                            , "right" => "1rem"
+                            , "bottom" => ".3rem"
+                            , "color" => "rgba(255, 255,255, .8)"
+                            ]
+                        ] 
+                        [ text ("by " ++ meetup.author) ]
                     ]
                 , div 
                     [ class "uk-text-muted uk-margin-remove"] 
