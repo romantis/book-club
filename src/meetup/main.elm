@@ -16,14 +16,21 @@ import Date.Format as Date
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
 
+type alias Place =
+    { region : String
+    , country : String
+    , city : String
+    , latitude : Float
+    , longitude : Float
+    }
 
 type alias Meetup = 
     { id : Int
     , title : String
-    , cover : String
+    , author : String
     , description : String
     , date : Time
-    , place : String
+    , place : Place
     }
 
 
@@ -99,7 +106,7 @@ meetupView meetup errors=
             
         , div [class "uk-width-small-1-2 uk-container-center uk-block"]
             [ h2 [] [ text "Meetup place"] 
-            , p [] [text meetup.place]
+            , p [] [text meetup.place.city]
             , h2 [class ""] [ text "Description"]
             , p [ class "" ]
                 [ text meetup.description
@@ -134,16 +141,24 @@ fetchUrl id =
     "http://localhost:4000/meetups/" ++ toString id
 
 
+placeDecoder : Decode.Decoder Place
+placeDecoder = 
+    Decode.object5 Place 
+        ("region" := Decode.string)
+        ("country" := Decode.string)
+        ("city" :=  Decode.string)
+        ("latitude" := Decode.float)
+        ("longitude" := Decode.float)
 
 memberDecoder : Decode.Decoder Meetup
 memberDecoder =
     Decode.object6 Meetup
         ("id" := Decode.int)
-        ("title" := Decode.string)
-        ("cover" := Decode.string)
+        ("bookTitle" := Decode.string)
+        ("author" := Decode.string)
         ("description" := Decode.string)
-        ("date" :=Decode.float)
-        ("place" := Decode.string)
+        ("date" := Decode.float)
+        ("place" := placeDecoder)
 
 sub : Model -> Sub Msg 
 sub model =

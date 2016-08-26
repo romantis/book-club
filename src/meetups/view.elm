@@ -37,7 +37,6 @@ listView model =
 
 
 
-
 -- Meetup Header view
 
 searchQ : String -> Html Msg
@@ -98,14 +97,19 @@ meetupThumView meetup =
                         [ a [ hrefClick Navigate url 
                             , href url 
                             ]  
-                            [text meetup.title]
+                            [ text meetup.title ]
                         ]
                     ]
-                -- , hr [ class "uk-margin-remove"] []
-                , p 
+                , div 
                     [ class "uk-text-muted uk-margin-remove"] 
-                    [ i [class "uk-icon-calendar uk-margin-small-right"] []
-                    , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
+                    [ p [ class "uk-float-right"] 
+                        [ i [ class "uk-icon-calendar uk-margin-small-right" ] []
+                        , text (Date.format "%b %e, %Y" <| Date.fromTime meetup.date)
+                        ]
+                    , p []
+                        [ i [ class "uk-icon-map-marker uk-margin-small-right" ] [] 
+                        , text (meetup.place.city ++ ", "++ meetup.place.country) 
+                        ]
                     ]
                 , p [] [text ((String.left 100 meetup.description) ++ " ...") ]
                 , a 
@@ -121,7 +125,6 @@ meetupThumView meetup =
 
 
 --  Suarch view
-
 
 searchView : Html Msg
 searchView   =
