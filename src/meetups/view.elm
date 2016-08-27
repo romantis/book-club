@@ -4,20 +4,15 @@ import Html.App as App
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onSubmit, onInput, onClick)
-
-import Date
-import Time
-import String
-import Date.Format as Date
 import Regex exposing (regex, caseInsensitive)
-import Color
 
-import Meetup.Main exposing (Meetup)
+-- import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
 import Meetups.Messages exposing (Msg(..))
+import Meetups.ThumbnailView as Thumbnail
 
-import Shared.RandomColor exposing (colorList, getColor)
-import Shared.Helpers exposing (hrefClick)
+
+-- import Shared.Helpers exposing (hrefClick)
 import Errors.Main as Errors
 
 
@@ -64,84 +59,14 @@ meetupsList : Model -> Html Msg
 meetupsList model = 
     section [ class "uk-width-small-3-4 uk-container-center uk-grid"] <|
         if model.search == "" then 
-            (List.map meetupThumView model.meetups)
+            (List.map Thumbnail.view model.meetups)
         else 
             model.meetups
                 |> List.filter (\s -> Regex.contains (caseInsensitive <| regex model.search) s.title)
-                |> List.map meetupThumView
+                |> List.map Thumbnail.view
 
 
 
-
-
-meetupThumView : Meetup  -> Html Msg
-meetupThumView meetup =
-    let
-        url = 
-             "#" ++ "meetup/" ++ toString meetup.id
-        rColor =
-            List.length colorList
-                |> (%) (Time.inMilliseconds meetup.date |> round)
-                |> getColor
-    in
-        div [ class "uk-width-medium-1-2 uk-width-large-1-3 uk-animation-fade uk-margin-bottom" 
-            ]
-            [ div [ class "uk-panel uk-panel-box" ] 
-                [ div 
-                    [ class "uk-panel-teaser"
-                    , style 
-                        [ "background" => ("linear-gradient("++rColor++", black)" )
-                        -- , "display" => "flex"
-                        -- , "flex-direction" => "row"
-                        , "height" => "200px"
-                        ]
-                    ] 
-                    [ h3 
-                        [] 
-                        [ a [ hrefClick Navigate url 
-                            , href url
-                            , style 
-                                [ "font-size" => "1.2em"
-                                , "color" =>  rColor
-                                , "background" => "white"
-                                , "text-shadow" => "1px 1px 1px black"
-                                , "padding" => "0 .5em"
-                                ] 
-                            ]  
-                            [ text meetup.title ]
-                        ]
-                    , i 
-                        [ style 
-                            ["margin" => "0 0 0.5em 1em"
-                            , "font-size" => "1.2rem"
-                            , "position" => "absolute"
-                            , "right" => "1rem"
-                            , "bottom" => ".3rem"
-                            , "color" => "rgba(255, 255,255, .8)"
-                            ]
-                        ] 
-                        [ text ("by " ++ meetup.author) ]
-                    ]
-                , div 
-                    [ class "uk-text-muted uk-margin-remove"] 
-                    [ p [ class "uk-float-right"] 
-                        [ i [ class "uk-icon-calendar uk-margin-small-right" ] []
-                        , text (Date.format "%b %e, %Y" <| Date.fromTime meetup.date)
-                        ]
-                    , p []
-                        [ i [ class "uk-icon-map-marker uk-margin-small-right" ] [] 
-                        , text (meetup.place.city ++ ", "++ meetup.place.country) 
-                        ]
-                    ]
-                , p [] [text ((String.left 100 meetup.description) ++ " ...") ]
-                , a 
-                    [ class "uk-float-right"
-                    , hrefClick Navigate url 
-                    , href url
-                    ] 
-                    [ text "Details"]
-                ]
-            ]
 
 
 
