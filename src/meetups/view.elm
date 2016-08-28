@@ -4,7 +4,7 @@ import Html.App as App
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onSubmit, onInput, onClick)
-import Regex exposing (regex, caseInsensitive)
+
 
 -- import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
@@ -57,13 +57,12 @@ searchQ sq =
 
 meetupsList : Model -> Html Msg 
 meetupsList model = 
-    section [ class "uk-width-small-3-4 uk-container-center uk-grid"] <|
-        if model.search == "" then 
-            (List.map Thumbnail.view model.meetups)
-        else 
-            model.meetups
-                |> List.filter (\s -> Regex.contains (caseInsensitive <| regex model.search) s.title)
-                |> List.map Thumbnail.view
+    let 
+        meetups =
+            List.take model.items model.filtered
+    in
+        section [ class "uk-width-small-3-4 uk-container-center uk-grid"]
+            (List.map Thumbnail.view meetups)
 
 
 

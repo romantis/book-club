@@ -1,6 +1,7 @@
 module Meetups.Messages exposing(..)
 
 import Http
+import Date exposing (Date)
 
 import Meetup.Main exposing (Meetup)
 import Errors.Main as Errors
@@ -12,4 +13,6 @@ type Msg
     | FindMeetup
     | Navigate String
     | SearchQuery String
+    | NowDateFail String
+    | NowDateSuccess Date
     | ErrMsg Errors.Msg

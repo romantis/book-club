@@ -1,6 +1,9 @@
 module Meetups.Update exposing (..)
 
 import Navigation
+import Date
+import Regex exposing (regex, caseInsensitive)
+
 import Meetups.Model exposing (Model) 
 import Meetups.Messages exposing (Msg(..))
 import Errors.Main as Errors
@@ -9,10 +12,18 @@ import Errors.Main as Errors
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of 
+
         FetchAllDone meetups ->
-            ( {model | meetups = meetups}
-            , Cmd.none
-            )
+            let 
+                filtered = 
+                    List.filter (\m -> m.date >= model.now) meetups 
+            in
+                ({model 
+                    | meetups = filtered
+                    , filtered = filtered
+                    }
+                , Cmd.none
+                )
 
         FetchAllFail err ->
             ( {model 
@@ -27,16 +38,35 @@ update msg model =
             )
 
         SearchQuery sq -> 
-            ( {model | search = sq}
-            , Cmd.none
-            )
+            let 
+                meetups =
+                    if model.search == "" then 
+                        model.meetups
+                    else 
+                        List.filter 
+                            (\s -> Regex.contains (caseInsensitive <| regex sq) s.title)
+                            model.meetups
+            in
+                ({model 
+                    | search = sq
+                    , filtered = meetups
+                    }
+                , Cmd.none
+                )
 
         FindMeetup ->
             ( model
             , Cmd.none
             )
         
+        NowDateFail _ ->
+           (model , Cmd.none)
         
+        NowDateSuccess date ->
+            ( {model | now = Date.toTime date}
+            , Cmd.none
+            )
+
         ErrMsg subMsg ->
             let 
                 errModel = 

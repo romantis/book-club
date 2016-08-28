@@ -1,6 +1,7 @@
 module Meetups.Commands exposing(..)
 
 import Http
+import Date
 import Task
 import Json.Decode as Decode exposing ((:=))
 
@@ -14,6 +15,7 @@ import Errors.Main as Errors
 commands = 
     Cmd.batch
         [ fetch
+        , getCurrentDate
         ]
 
 
@@ -22,6 +24,10 @@ fetch =
     Http.get decoder fetchUrl
         |> Task.perform FetchAllFail FetchAllDone
 
+
+getCurrentDate : Cmd Msg
+getCurrentDate = 
+    Task.perform NowDateFail NowDateSuccess Date.now
 
 fetchUrl : String
 fetchUrl =
