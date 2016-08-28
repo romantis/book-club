@@ -10,7 +10,7 @@ import Errors.Main as Errors
 type Msg 
     = FetchAllDone (List Meetup)
     | FetchAllFail Http.Error
-    | FindMeetup
+    | MoreMeetups
     | Navigate String
     | SearchQuery String
     | NowDateFail String

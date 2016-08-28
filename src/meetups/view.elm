@@ -28,6 +28,7 @@ listView model =
         [ searchView
         , searchQ model.search
         , meetupsList model
+        , moreMeetupsBtn model
         , App.map ErrMsg (Errors.view model.errors)
         ] 
 
@@ -62,7 +63,7 @@ meetupsList model =
             List.take model.items model.filtered
     in
         section [ class "uk-width-small-3-4 uk-container-center uk-grid"]
-            (List.map Thumbnail.view meetups)
+            (List.map Thumbnail.view meetups) 
 
 
 
@@ -90,7 +91,6 @@ searchForm : Html Msg
 searchForm = 
     form 
         [ class "uk-form uk-form-icon"
-        , onSubmit FindMeetup
         , style [ "width" => "100%"]
         ] 
         [ i [ class "uk-icon uk-icon-search"] []
@@ -102,3 +102,15 @@ searchForm =
                 , class "uk-form-large uk-width-1-1"
                 ] []
         ] 
+
+
+moreMeetupsBtn : Model -> Html Msg
+moreMeetupsBtn model = 
+    if List.length model.filtered > model.items then
+        button 
+            [ class "uk-button uk-button-link uk-margin-large uk-width-1-1"
+            , onClick MoreMeetups
+            ] 
+            [ text "More Meetups"]
+    else 
+        text ""

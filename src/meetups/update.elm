@@ -50,12 +50,13 @@ update msg model =
                 ({model 
                     | search = sq
                     , filtered = meetups
+                    , items = 6
                     }
                 , Cmd.none
                 )
 
-        FindMeetup ->
-            ( model
+        MoreMeetups ->
+            ( {model | items = model.items*2} 
             , Cmd.none
             )
         
