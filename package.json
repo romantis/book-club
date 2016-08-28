@@ -16,6 +16,7 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
+    "google-maps": "^3.2.1",
     "uikit": "^2.26.4"
   },
   "devDependencies": {
