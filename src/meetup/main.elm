@@ -97,21 +97,22 @@ meetupView meetup errors=
     section 
         [ class "bc-min-height"]
         [ meetupHeaderLayout
-            [ h1 [ class "uk-heading-large"] 
+            [ h1 [ class "uk-heading-large uk-text-center"] 
                 [ text meetup.title
                 , span [class "uk-text-primary uk-margin-left"] [text "Meetup"] 
                 ]
-            , div [ class "uk-text-large"] 
-                [ i [class "uk-icon-calendar uk-margin-small-right"] []
-                , text <| Date.format "%B %e, %Y at %k:%M" (Date.fromTime meetup.date)
+            , p [ class "uk-text-large uk-text-center"] 
+                [ text ("by " ++ meetup.author)
                 ]
             ]
             
         , div [ class "uk-grid"] 
             [ descriptionLayout
-                [ h2 [] [ text "Meetup place"] 
-                , p [] [text ( meetup.place.city ++ ", "++ meetup.place.country  ) ]
-                , h2 [class ""] [ text "Description"]
+                [ h2 [] [ text "When"]
+                , p [ class "uk-text-large"] [ text <| Date.format "%B %e, %Y at %k:%M" (Date.fromTime meetup.date)] 
+                , h2 [] [ text "Where"]
+                , p [ class "uk-text-large"] [text (meetup.place.city ++ ", "++ meetup.place.country)] 
+                , h2 [class ""] [ text "Meetup Details"]
                 , p [ class "" ]
                     [ text meetup.description
                     ] 
@@ -119,7 +120,10 @@ meetupView meetup errors=
             , div 
                 [ id "place-map"
                 , class "uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-2-3"
-                , style ["background" => "#eee"] 
+                , style 
+                    [ "background" => "#eee"
+                    , "min-height" => "55vh"
+                    ] 
                 ]
                 []
             ]
@@ -128,26 +132,28 @@ meetupView meetup errors=
         ] 
 
 
+meetupHeaderLayout : List (Html Msg) -> Html Msg
+meetupHeaderLayout content =
+    header 
+        [ style [ "height" => "30vh"]
+        , class "bg-carbon-fibre uk-contrast uk-flex uk-flex-center uk-flex-column uk"
+        ] 
+        content
+
+
 descriptionLayout : List (Html Msg) -> Html Msg
 descriptionLayout content = 
     div [class "uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-1-3"]
         [ div 
             [ class "uk-block"
-            , style [ "padding-left"=> "1em"
-                    , "padding-right"=> "1em"
+            , style [ "padding-left"=> "1.5em"
+                    , "padding-right"=> "1.5em"
                     ]
             ] 
             content 
         ]
 
 
-meetupHeaderLayout : List (Html Msg) -> Html Msg
-meetupHeaderLayout content =
-    header 
-        [ style [ "height" => "30vh"]
-        , class "bg-carbon-fibre uk-contrast uk-flex uk-flex-center uk-flex-middle uk-flex-column"
-        ] 
-        content
 
 
 
