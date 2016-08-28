@@ -48,7 +48,7 @@ urlUpdCmd : Route -> Cmd Msg
 urlUpdCmd route =
     case route of 
         MeetupsRoute ->
-            Cmd.map MeetupsMsg Meetups.fetch
+            Cmd.map MeetupsMsg Meetups.commands
         MeetupRoute id ->
             Cmd.map MeetupMsg (Meetup.fetch id)
         CreateMeetupRoute ->

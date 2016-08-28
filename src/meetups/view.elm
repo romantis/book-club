@@ -5,18 +5,15 @@ import Html exposing (..)
 import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onSubmit, onInput, onClick)
 
-import Date
-import Date.Format as Date
-import Regex exposing (regex, caseInsensitive)
 
-import Meetup.Main exposing (Meetup)
+-- import Meetup.Main exposing (Meetup)
 import Meetups.Model exposing (Model)
 import Meetups.Messages exposing (Msg(..))
+import Meetups.ThumbnailView as Thumbnail
 
 
-import Shared.Helpers exposing (hrefClick)
+-- import Shared.Helpers exposing (hrefClick)
 import Errors.Main as Errors
-
 
 
 
@@ -31,9 +28,9 @@ listView model =
         [ searchView
         , searchQ model.search
         , meetupsList model
+        , moreMeetupsBtn model
         , App.map ErrMsg (Errors.view model.errors)
         ] 
-
 
 
 
@@ -61,57 +58,20 @@ searchQ sq =
 
 meetupsList : Model -> Html Msg 
 meetupsList model = 
-    section [ class "uk-width-small-3-4 uk-container-center uk-grid"] <|
-        if model.search == "" then 
-            (List.map meetupThumView model.meetups )
-        else 
-            model.meetups
-                |> List.filter (\s -> Regex.contains (caseInsensitive <| regex model.search) s.title)
-                |> List.map meetupThumView
-
-
-
-
-
-meetupThumView : Meetup -> Html Msg
-meetupThumView meetup =
-    let
-        url = 
-             "#" ++ "meetup/" ++ toString meetup.id
+    let 
+        meetups =
+            List.take model.items model.filtered
     in
-        div [ class "uk-width-medium-1-2 uk-width-large-1-3 uk-animation-fade uk-margin-bottom" 
-            ]
-            [ div [ class "uk-panel uk-panel-box" ] 
-                [ div 
-                    [ class "uk-panel-teaser"] 
-                    [ img [src meetup.cover] []]
-                ,  h3 [class "uk-panel-title"] 
-                    [ a [ hrefClick Navigate url 
-                        , href url 
-                        ]  
-                        [text meetup.title]
-                    ]
-                , hr [ class "uk-margin-remove"] []
-                , p 
-                    [ class "uk-text-muted uk-margin-remove"] 
-                    [ i [class "uk-icon-calendar uk-margin-small-right"] []
-                    , text (Date.format "%B %e, %Y at %k:%M" <| Date.fromTime meetup.date)
-                    ]
-                , p [] [text meetup.description]
-                , a 
-                    [ class "uk-float-right"
-                    , hrefClick Navigate url 
-                    , href url
-                    ] 
-                    [ text "Details"]
-                ]
-            ]
+        section [ class "uk-width-small-3-4 uk-container-center uk-grid"]
+            (List.map Thumbnail.view meetups) 
+
+
+
 
 
 
 
 --  Suarch view
-
 
 searchView : Html Msg
 searchView   =
@@ -131,7 +91,6 @@ searchForm : Html Msg
 searchForm = 
     form 
         [ class "uk-form uk-form-icon"
-        , onSubmit FindMeetup
         , style [ "width" => "100%"]
         ] 
         [ i [ class "uk-icon uk-icon-search"] []
@@ -143,3 +102,15 @@ searchForm =
                 , class "uk-form-large uk-width-1-1"
                 ] []
         ] 
+
+
+moreMeetupsBtn : Model -> Html Msg
+moreMeetupsBtn model = 
+    if List.length model.filtered > model.items then
+        button 
+            [ class "uk-button uk-button-link uk-margin-large uk-width-1-1"
+            , onClick MoreMeetups
+            ] 
+            [ text "More Meetups"]
+    else 
+        text ""

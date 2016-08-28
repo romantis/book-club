@@ -1,6 +1,7 @@
 module Meetups.Commands exposing(..)
 
 import Http
+import Date
 import Task
 import Json.Decode as Decode exposing ((:=))
 
@@ -9,11 +10,24 @@ import Meetup.Main exposing (Meetup, memberDecoder)
 import Meetups.Messages exposing (Msg(..))
 import Errors.Main as Errors
 
+
+
+commands = 
+    Cmd.batch
+        [ fetch
+        , getCurrentDate
+        ]
+
+
 fetch : Cmd Msg
 fetch =
     Http.get decoder fetchUrl
         |> Task.perform FetchAllFail FetchAllDone
 
+
+getCurrentDate : Cmd Msg
+getCurrentDate = 
+    Task.perform NowDateFail NowDateSuccess Date.now
 
 fetchUrl : String
 fetchUrl =
