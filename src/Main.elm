@@ -25,14 +25,6 @@ init result =
         ) 
 
 
-subscriptions : Model -> Sub Msg 
-subscriptions model =
-    Sub.batch 
-        [ Sub.map MeetupsMsg (Meetups.sub model.meetups)
-        , Sub.map MeetupMsg (Meetup.sub model.meetup) 
-        ]
-    
-
 
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
 urlUpdate result model =
@@ -55,6 +47,14 @@ urlUpdCmd route =
             Cmd.map CreateMeetupMsg (CreateMeetup.getCurrentDate)
         _ ->
             Cmd.none 
+
+
+subscriptions : Model -> Sub Msg 
+subscriptions model =
+    Sub.batch 
+        [ Sub.map MeetupsMsg (Meetups.sub model.meetups)
+        , Sub.map MeetupMsg (Meetup.sub model.meetup) 
+        ]
 
 
 main : Program Never
