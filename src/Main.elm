@@ -19,9 +19,12 @@ init result =
     let
         currentRoute =
             Routing.routeFromResult result
+        model =
+            initialModel currentRoute
+
     in
-        ( initialModel currentRoute
-        , urlUpdCmd currentRoute 
+        ( model
+        , updCmd model 
         ) 
 
 
@@ -31,20 +34,22 @@ urlUpdate result model =
     let
         currentRoute =
             Routing.routeFromResult result
+        updModel =
+          { model | route = currentRoute }  
     in
-        ( { model | route = currentRoute }
-        , urlUpdCmd currentRoute 
+        ( updModel
+        , updCmd updModel 
         )
 
-urlUpdCmd : Route -> Cmd Msg
-urlUpdCmd route =
-    case route of 
+updCmd : Model -> Cmd Msg
+updCmd m =
+    case m.route of 
         MeetupsRoute ->
-            Cmd.map MeetupsMsg Meetups.commands
+            Cmd.map MeetupsMsg (Meetups.commands m.meetups) 
         MeetupRoute id ->
-            Cmd.map MeetupMsg (Meetup.fetch id)
+            Cmd.map MeetupMsg (Meetup.commands id)
         CreateMeetupRoute ->
-            Cmd.map CreateMeetupMsg (CreateMeetup.getCurrentDate)
+            Cmd.map CreateMeetupMsg (CreateMeetup.commands)
         _ ->
             Cmd.none 
 

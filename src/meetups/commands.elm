@@ -11,12 +11,16 @@ import Meetups.Messages exposing (Msg(..))
 import Errors.Main as Errors
 
 
-
-commands = 
-    Cmd.batch
-        [ fetch
-        , getCurrentDate
-        ]
+commands : Model -> Cmd Msg
+commands model = 
+    case  model.meetups of
+        hd::tl ->
+            Cmd.none
+        [] ->
+        Cmd.batch
+            [ fetch
+            , getCurrentDate
+            ]
 
 
 fetch : Cmd Msg

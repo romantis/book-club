@@ -218,14 +218,17 @@ validate { title, cover, description, date, place } =
     && strValid description 
     && strValid place
 
+-- Commands 
+commands : Cmd Msg
+commands =
+    getCurrentDate    
+
+
 
 getCurrentDate : Cmd Msg
 getCurrentDate = 
     Task.perform NowDateFail NowDateSuccess Date.now
 
-
-
--- Commands 
 
 createNewMeetup : NewMeetup -> Cmd Msg
 createNewMeetup meetup = 

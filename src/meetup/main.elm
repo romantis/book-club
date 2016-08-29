@@ -159,6 +159,10 @@ descriptionLayout content =
 
 --  Commands 
 
+commands : Int -> Cmd Msg
+commands id =
+    fetch id
+
 
 fetch : Int -> Cmd Msg
 fetch id  =
