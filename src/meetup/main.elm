@@ -84,7 +84,7 @@ view : Model -> Html Msg
 view model =
     case model.meetup of
         Nothing -> 
-            div []
+            div [ class "bc-min-height" ]
                 [ text "Loading..."
                 , App.map ErrMsg (Errors.view model.errors)
                 ]
