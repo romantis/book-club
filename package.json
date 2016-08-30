@@ -17,17 +17,17 @@
   },
   "dependencies": {
     "google-maps": "^3.2.1",
-    "uikit": "^2.26.4"
+    "uikit": "^2.27.0"
   },
   "devDependencies": {
-    "css-loader": "^0.23.1",
-    "elm-webpack-loader": "^3.0.3",
+    "css-loader": "^0.24.0",
+    "elm-webpack-loader": "^3.0.6",
     "file-loader": "^0.9.0",
-    "json-server": "^0.8.16",
+    "json-server": "^0.8.18",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1",
+    "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.15.0"
   }
 }
