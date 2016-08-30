@@ -18,12 +18,16 @@ var app = Elm.Main.embed(mountNode);
 
 app.ports.loadmap.subscribe(([latitude, longitude]) => {
     gm.load((google) => {
-        console.log(latitude, longitude)
         let  options = {
             center: new google.maps.LatLng(latitude, longitude),
             zoom: 12,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        new google.maps.Map(document.getElementById('place-map'), options);
+        setTimeout(() => {
+            let el = document.getElementById('place-map');
+            if (!el) return console.log("Ooops. Element is not ready ", el)
+            new google.maps.Map(el, options);
+        }
+        ,50)
     });
 })
