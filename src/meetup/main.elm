@@ -80,7 +80,7 @@ update msg ({meetup, errors} as model) =
 
 
 
-view : Model -> Html Msg 
+view : Model -> Html Msg  
 view model =
     case model.meetup of
         Nothing -> 
@@ -155,12 +155,19 @@ descriptionLayout content =
 
 
 
+--  Helper Functions
+getMaybeMeetup : List Meetup -> Int -> Maybe Meetup
+getMaybeMeetup meetups id = 
+    meetups
+        |> List.filter (\m -> m.id == id)
+        |> List.head
+
 
 
 --  Commands 
 
 commands : Int -> Cmd Msg
-commands id =
+commands id  =
     fetch id
 
 

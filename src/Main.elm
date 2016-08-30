@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import Navigation
+
 import Messages exposing (Msg(..))
 import Models exposing (Model, initialModel)
 import View exposing (view)
@@ -10,6 +11,7 @@ import Meetups.Commands as Meetups
 import Meetup.Main as Meetup
 import CreateMeetup.Main as CreateMeetup
 
+import Ports exposing (loadmap)
 
 
 
@@ -25,29 +27,52 @@ init result =
     in
         ( model
         , updCmd model 
-        ) 
+        )
 
 
 
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
-urlUpdate result model =
+urlUpdate result model' =
     let
         currentRoute =
             Routing.routeFromResult result
-        updModel =
-          { model | route = currentRoute }  
+        model =
+            updModel 
+                {model' | route = currentRoute}  
     in
-        ( updModel
-        , updCmd updModel 
+        ( model
+        , updCmd model 
         )
+
+updModel : Model -> Model
+updModel model =
+    case model.route of
+        MeetupRoute id ->
+            let 
+                meetupModel =
+                    model.meetup
+                meetup =
+                    {meetupModel | meetup = Meetup.getMaybeMeetup model.meetups.meetups id}
+            in 
+                {model | meetup = meetup} 
+        
+        _ ->  model
+
 
 updCmd : Model -> Cmd Msg
 updCmd m =
     case m.route of 
         MeetupsRoute ->
             Cmd.map MeetupsMsg (Meetups.commands m.meetups) 
+
         MeetupRoute id ->
-            Cmd.map MeetupMsg (Meetup.commands id)
+            case Meetup.getMaybeMeetup m.meetups.meetups id of
+                Just meetup ->
+                    loadmap (meetup.place.latitude, meetup.place.longitude) 
+                Nothing ->
+                    Cmd.map MeetupMsg (Meetup.commands id) 
+                 
+                      
         CreateMeetupRoute ->
             Cmd.map CreateMeetupMsg (CreateMeetup.commands)
         _ ->
