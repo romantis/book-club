@@ -1,13 +1,15 @@
-# Elm starter project for webapps
-## Prerequisites
-* Node 4 or greater.
-* Elm 0.17.1 
+# Frontend for a Book Club
+For now it's in the stage of concept. 
 
 ## What's inside
 * UI framework [uikit](https://github.com/uikit/uikit)
 * Module bundler [webpack](https://webpack.github.io)
 * Development server [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-* fake REST API server [json-server](https://github.com/typicode/json-server)
+* REST API server [json-server](https://github.com/typicode/json-server)
+
+## Prerequisites
+* [Node 4](https://nodejs.org/en/) or greater.
+* [Elm](http://elm-lang.org/) 0.17.1 
 
 ## Installation
 ```bash

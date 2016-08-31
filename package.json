@@ -1,11 +1,11 @@
 {
-  "name": "elm-starter",
+  "name": "book-club",
   "version": "0.2.0",
-  "description": "elm starter project for building web apps",
+  "description": "frontend for a book club",
   "author": "Roman Tischenko",
   "repository": {
     "type": "git",
-    "url": "https://github.com/romantis/elm-starter.git"
+    "url": "https://github.com/romantis/book-club"
   },
   "license": "MIT",
   "main": "src/index.js",
