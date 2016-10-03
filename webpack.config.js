@@ -50,6 +50,7 @@ module.exports = {
     inline: true,
     contentBase: './',
     stats: { colors: true },
+    historyApiFallback: true
   },
 
   resolve: {
