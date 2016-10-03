@@ -8,14 +8,13 @@ import String
 import Time exposing (Time)
 import Task exposing (Task)
 import Http
-import Json.Decode as Decode exposing ((:=))
+import Json.Decode exposing (int, string, float, Decoder)
+import Json.Decode.Pipeline exposing (decode, required)
 import Json.Encode as Encode
 import Navigation
 
 import Date.Format as Date
--- import Debug
 
---import Meetup.Main exposing (Meetup)
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
@@ -261,14 +260,14 @@ createMeetupUrl : String
 createMeetupUrl = 
     "http://localhost:4000/meetups"
 
-meetupDecoder : Decode.Decoder NewMeetup
+meetupDecoder : Decoder NewMeetup
 meetupDecoder =
-    Decode.object5 NewMeetup
-        ("title" := Decode.string) 
-        ("cover" := Decode.string)
-        ("description" := Decode.string)
-        ("place" := Decode.string)
-        ("date" := Decode.float)
+    decode NewMeetup
+        |> required "title" string 
+        |> required "cover" string
+        |> required "description" string
+        |> required "place" string
+        |> required "date" float
 
 
 meetupEncoded : NewMeetup -> Encode.Value 

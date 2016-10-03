@@ -6,7 +6,8 @@ import Html.App as App
 
 import Http
 import Task
-import Json.Decode as Decode exposing ((:=), andThen)
+import Json.Decode exposing (int, string, float, Decoder)
+import Json.Decode.Pipeline exposing (decode, required)
 import Date exposing (Date, Month(..))
 import Time exposing (Time)
 
@@ -182,24 +183,24 @@ fetchUrl id =
     "http://localhost:4000/meetups/" ++ toString id
 
 
-placeDecoder : Decode.Decoder Place
+placeDecoder : Decoder Place
 placeDecoder = 
-    Decode.object5 Place 
-        ("region" := Decode.string)
-        ("country" := Decode.string)
-        ("city" :=  Decode.string)
-        ("latitude" := Decode.float)
-        ("longitude" := Decode.float)
+    decode Place 
+        |> required "region" string
+        |> required "country" string
+        |> required "city" string
+        |> required "latitude" float
+        |> required "longitude" float
 
-memberDecoder : Decode.Decoder Meetup
+memberDecoder : Decoder Meetup
 memberDecoder =
-    Decode.object6 Meetup
-        ("id" := Decode.int)
-        ("bookTitle" := Decode.string)
-        ("author" := Decode.string)
-        ("description" := Decode.string)
-        ("date" := Decode.float)
-        ("place" := placeDecoder)
+    decode Meetup
+        |> required "id" int
+        |> required "bookTitle" string
+        |> required "author" string
+        |> required "description" string
+        |> required "date" float
+        |> required "place" placeDecoder
 
 sub : Model -> Sub Msg 
 sub model =
