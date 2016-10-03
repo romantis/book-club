@@ -14,9 +14,7 @@ import Json.Encode as Encode
 import Navigation
 
 import Date.Format as Date
--- import Debug
 
---import Meetup.Main exposing (Meetup)
 
 (=>) : a -> b -> ( a, b )
 (=>) = (,)
