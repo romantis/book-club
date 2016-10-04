@@ -31,16 +31,16 @@ matchers =
         ]
 
 
-hashParser : Navigation.Location -> Result String Route
-hashParser location =
-    location.hash
+pathParser : Navigation.Location -> Result String Route
+pathParser location =
+    location.pathname
         |> String.dropLeft 1
         |> parse identity matchers
 
 
 parser : Navigation.Parser (Result String Route)
 parser =
-    Navigation.makeParser hashParser
+    Navigation.makeParser pathParser
 
 
 routeFromResult : Result String Route -> Route

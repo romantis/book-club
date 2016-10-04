@@ -64,7 +64,7 @@ navItem : String -> String -> Html Msg
 navItem currentRoute route =
     let
         url = 
-            "#" ++ route
+            "/" ++ route
     in
         li [ classList ["uk-active" => (currentRoute == route) ] ]
             [ a 
@@ -99,8 +99,8 @@ createBtn : Html Msg
 createBtn =
     a 
         [ class "uk-button uk-button-primary" 
-        , hrefClick Navigate ("#" ++ "create")
-        , href ("#" ++ "create")
+        , hrefClick Navigate "/create"
+        , href "/create"
         ]
         [ text "Create"]
 
