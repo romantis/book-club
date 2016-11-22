@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Front-End for a book club",
-    "repository": "https://github.com/romantis/book-club",
+    "repository": "https://github.com/romantis/book-club.git",
     "license": "MIT",
     "source-directories": [
         "./src"
