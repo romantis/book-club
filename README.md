@@ -9,12 +9,12 @@ For now it's in the stage of concept.
 
 ## Prerequisites
 * [Node 4](https://nodejs.org/en/) or greater.
-* [Elm](http://elm-lang.org/) 0.17.1 
+* [Elm](http://elm-lang.org/) 0.18.0 
 
 ## Installation
 ```bash
- git clone https://github.com/romantis/elm-starter.git
- cd elm-starter
+ git https://github.com/romantis/book-club
+ cd book-club
  npm install
  elm-package install -y
 ```
