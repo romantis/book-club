@@ -3,7 +3,7 @@ module Meetups.Commands exposing(..)
 import Http
 import Date
 import Task
-import Json.Decode as Decode exposing ((:=))
+import Json.Decode as Decode
 
 import Meetups.Model exposing (Model)
 import Meetup.Main exposing (Meetup, memberDecoder)
@@ -25,18 +25,17 @@ commands model =
 
 fetch : Cmd Msg
 fetch =
-    Http.get decoder fetchUrl
-        |> Task.perform FetchAllFail FetchAllDone
+    Http.get fetchUrl decoder 
+        |> Http.send FetchMeetups
 
 
 getCurrentDate : Cmd Msg
 getCurrentDate = 
-    Task.perform NowDateFail NowDateSuccess Date.now
+    Task.perform NowDate Date.now
 
 fetchUrl : String
 fetchUrl =
     "http://localhost:4000/meetups"
-
 
 
 decoder : Decode.Decoder (List Meetup)
@@ -45,4 +44,4 @@ decoder =
 
 sub : Model -> Sub Msg 
 sub model =
-    Sub.map ErrMsg (Errors.sub model.errors)
+    Sub.map ErrMsg (Errors.sub model.errors) 

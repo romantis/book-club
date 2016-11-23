@@ -21,33 +21,21 @@ routeString route =
             ""
         
 
-matchers : Parser (Route -> a) a
-matchers =
+route : Parser (Route -> a) a
+route =
     oneOf
-        [ format MeetupsRoute (s "") 
-        , format CreateMeetupRoute ( s "create")
-        , format MeetupsRoute (s "meetups")
-        , format MeetupRoute (s "meetup" </> int)
+        [ map MeetupsRoute (s "") 
+        , map CreateMeetupRoute ( s "create")
+        , map MeetupsRoute (s "meetups")
+        , map MeetupRoute (s "meetup" </> int)
         ]
 
 
-hashParser : Navigation.Location -> Result String Route
-hashParser location =
-    location.hash
-        |> String.dropLeft 1
-        |> parse identity matchers
-
-
-parser : Navigation.Parser (Result String Route)
-parser =
-    Navigation.makeParser hashParser
-
-
-routeFromResult : Result String Route -> Route
-routeFromResult result =
-    case result of
-        Ok route ->
+parser : Navigation.Location -> Route
+parser location =
+     case parsePath route location of
+        Just route ->
             route
 
-        Err string ->
-            NotFoundRoute 
+        Nothing ->
+            NotFoundRoute    

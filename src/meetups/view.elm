@@ -1,8 +1,8 @@
 module Meetups.View exposing (..)
 
-import Html.App as App
+import Html
 import Html exposing (..)
-import Html.Attributes as Attr exposing (class, style, src, type', placeholder, tabindex, autofocus, href, for, id)
+import Html.Attributes as Attr exposing (class, style, src, type_, placeholder, tabindex, autofocus, href, for, id)
 import Html.Events exposing (onSubmit, onInput, onClick)
 
 
@@ -29,7 +29,7 @@ listView model =
         , searchQ model.search
         , meetupsList model
         , moreMeetupsBtn model
-        , App.map ErrMsg (Errors.view model.errors)
+        , Html.map ErrMsg (Errors.view model.errors)
         ] 
 
 
@@ -94,7 +94,7 @@ searchForm =
         , style [ "width" => "100%"]
         ] 
         [ i [ class "uk-icon uk-icon-search"] []
-        , input [ type' "search"
+        , input [ type_ "search"
                 , onInput SearchQuery 
                 , autofocus True
                 , tabindex 1

@@ -5,29 +5,28 @@
   "author": "Roman Tischenko",
   "repository": {
     "type": "git",
-    "url": "https://github.com/romantis/book-club"
+    "url": "https://github.com/romantis/book-club.git"
   },
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch",
-    "api": "json-server db.json -p 4000",
+    "api": "node ./src/api-server",
     "start": "webpack-dev-server"
   },
   "dependencies": {
     "google-maps": "^3.2.1",
-    "uikit": "^2.27.0"
+    "uikit": "^2.27.2"
   },
   "devDependencies": {
-    "css-loader": "^0.25.0",
+    "css-loader": "^0.26.0",
     "elm-webpack-loader": "^3.0.6",
     "file-loader": "^0.9.0",
-    "json-server": "^0.8.21",
+    "json-server": "^0.9.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.2",
-    "webpack-dev-middleware": "^1.8.3",
-    "webpack-dev-server": "^1.16.1"
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-dev-server": "^1.16.2"
   }
 }

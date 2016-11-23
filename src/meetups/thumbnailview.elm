@@ -25,7 +25,7 @@ view : Meetup  -> Html Msg
 view meetup =
     let
         url = 
-             "#" ++ "meetup/" ++ toString meetup.id
+             "/meetup/" ++ toString meetup.id
         rColor =
             List.length colorList
                 |> (%) (Time.inMilliseconds meetup.date |> round)

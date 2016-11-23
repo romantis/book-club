@@ -3,7 +3,7 @@ module Errors.Main exposing (Model, init, Msg, update, view, sub, addNew)
 import Html exposing (..)
 import Html.Attributes exposing (style, href, class)
 import Html.Events exposing (onClick)
-import Http
+import Http exposing (Response)
 import Time exposing (Time, second)
 
 
@@ -78,18 +78,24 @@ errView err =
 
 errorType : Http.Error -> String
 errorType err =
-    case err of 
+    case err of
+        Http.BadUrl s ->
+            "Bad Url " ++ s
+
         Http.Timeout ->
             "Timeout problem"
 
         Http.NetworkError ->
             "Network Error"
 
-        Http.UnexpectedPayload msg ->
-            "unexpected payload" ++ msg
+        -- BadPayload String (Response String)
+        Http.BadPayload s _ ->
+            "Bad payload: " ++ s
 
-        Http.BadResponse code msg ->
-            "Bad Responce code: " ++ toString code ++ " Message: " ++ msg
+        -- BadStatus (Response String)
+        Http.BadStatus _ ->
+            "Status code: "
+
 
 
 errContainerStyle : Attribute a

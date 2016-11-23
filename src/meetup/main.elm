@@ -2,10 +2,9 @@ module Meetup.Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (src, class, style, id)
-import Html.App as App
+import Html
 
 import Http
-import Task
 import Json.Decode exposing (int, string, float, Decoder)
 import Json.Decode.Pipeline exposing (decode, required)
 import Date exposing (Date, Month(..))
@@ -45,8 +44,7 @@ type alias Model =
 
 
 type Msg 
-    = FetchAllFail Http.Error
-    | FetchAllDone Meetup
+    = FetchMeetup (Result Http.Error Meetup)
     | ErrMsg Errors.Msg
 
 
@@ -57,13 +55,13 @@ init =
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg ({meetup, errors} as model) =
     case msg of
-        FetchAllDone meetup ->
+        FetchMeetup (Ok meetup) ->
             ( {model | meetup = Just meetup}
             , loadmap (meetup.place.latitude, meetup.place.longitude)
             )
 
 
-        FetchAllFail err ->
+        FetchMeetup (Err err) ->
             ({ model | errors = Errors.addNew err model.errors }
             , Cmd.none
             ) 
@@ -87,7 +85,7 @@ view model =
         Nothing -> 
             div [ class "bc-min-height" ]
                 [ text "Loading..."
-                , App.map ErrMsg (Errors.view model.errors)
+                , Html.map ErrMsg (Errors.view model.errors)
                 ]
             
         Just meetup ->
@@ -129,7 +127,7 @@ meetupView meetup errors=
                 []
             ]
 
-        , App.map ErrMsg (Errors.view errors)
+        , Html.map ErrMsg (Errors.view errors)
         ] 
 
 
@@ -174,8 +172,8 @@ commands id  =
 
 fetch : Int -> Cmd Msg
 fetch id  =
-    Http.get memberDecoder (fetchUrl id) 
-        |> Task.perform FetchAllFail FetchAllDone
+    Http.get (fetchUrl id) memberDecoder  
+        |> Http.send FetchMeetup
 
 
 fetchUrl : Int -> String

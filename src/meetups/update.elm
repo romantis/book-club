@@ -13,7 +13,7 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of 
 
-        FetchAllDone meetups ->
+        FetchMeetups (Ok meetups) ->
             let 
                 filtered = 
                     List.filter (\m -> m.date >= model.now) meetups 
@@ -25,7 +25,7 @@ update msg model =
                 , Cmd.none
                 )
 
-        FetchAllFail err ->
+        FetchMeetups (Err err) ->
             ( {model 
                 | errors = Errors.addNew err model.errors
                 } 
@@ -60,10 +60,8 @@ update msg model =
             , Cmd.none
             )
         
-        NowDateFail _ ->
-           (model , Cmd.none)
         
-        NowDateSuccess date ->
+        NowDate date ->
             ( {model | now = Date.toTime date}
             , Cmd.none
             )
