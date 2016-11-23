@@ -1,7 +1,7 @@
 module CreateMeetup.Main exposing(..)
 
 import Html exposing(..)
-import Html.Attributes as Attr exposing (class, classList, style, src, type', placeholder, for, id)
+import Html.Attributes as Attr exposing (class, classList, style, src, type_, placeholder, for, id)
 import Html.Events exposing (onInput, onClick)
 import Date exposing (Date)
 import String
@@ -12,6 +12,9 @@ import Json.Decode exposing (int, string, float, Decoder)
 import Json.Decode.Pipeline exposing (decode, required)
 import Json.Encode as Encode
 import Navigation
+
+import Meetup.Main exposing (Meetup, memberDecoder)
+
 
 import Date.Format as Date
 
@@ -51,11 +54,8 @@ type Msg
     | InputDescription String
     | InputPlace String 
     | InputDate String
-    | NowDateSuccess Date
-    | NowDateFail String
-    | CreateFail Http.Error
-    | CreateSuccess NewMeetup
-
+    | NowDate Date
+    | CreateMeetupRequest (Result Http.Error Meetup)
 
 
 
@@ -77,10 +77,7 @@ update msg ({title, cover, description, place, date, now, validated} as model) =
                 , cmd
                 )
 
-        NowDateFail _ ->
-            ( model, Cmd.none)
-        
-        NowDateSuccess date ->
+        NowDate date ->
             ( {model | now = date}
             , Cmd.none
             )
@@ -123,13 +120,13 @@ update msg ({title, cover, description, place, date, now, validated} as model) =
             , Cmd.none
             )
         
-        CreateFail _ ->
-            ( model, Cmd.none)
-        
-        CreateSuccess _ ->
+        CreateMeetupRequest (Ok _) ->
             ( init
             , Navigation.newUrl "/"
             )
+        
+        CreateMeetupRequest (Err _) ->
+            ( model, Cmd.none)
         
 
 
@@ -145,7 +142,7 @@ view model =
                 [ label [ class "uk-form-label", for "meetup-title"] [ text "Meetup title"]
                 , div [ class "uk-form-control"] 
                     [ input 
-                        [ type' "text"
+                        [ type_ "text"
                         , id "meetup-title"
                         , placeholder "meetup title"
                         , onInput InputTitle
@@ -156,7 +153,7 @@ view model =
                 [ label [ class "uk-form-label", for "meetup-date"] [ text "Date"]
                 , div [ class "uk-form-control"] 
                     [ input 
-                        [ type' "date"
+                        [ type_ "date"
                         , Attr.min (Date.format "%Y-%m-%d" model.now)
                         , id "meetup-date"
                         , onInput InputDate
@@ -167,7 +164,7 @@ view model =
                 [ label [ class "uk-form-label", for "meetup-place"] [ text "Place"]
                 , div [ class "uk-form-control"] 
                     [ input 
-                        [ type' "text"
+                        [ type_ "text"
                         , id "meetup-place"
                         , placeholder "Place"
                         , onInput InputPlace
@@ -178,7 +175,7 @@ view model =
                 [ label [ class "uk-form-label", for "meetup-cover"] [ text "Cover"]
                 , div [ class "uk-form-control"] 
                     [ input 
-                        [ type' "url"
+                        [ type_ "url"
                         , id "meetup-cover"
                         , placeholder "image url"
                         , onInput InputCover
@@ -226,33 +223,22 @@ commands =
 
 getCurrentDate : Cmd Msg
 getCurrentDate = 
-    Task.perform NowDateFail NowDateSuccess Date.now
+    Task.perform NowDate Date.now
 
 
 createNewMeetup : NewMeetup -> Cmd Msg
-createNewMeetup meetup = 
-    createMeetupTask meetup
-        |> Task.perform CreateFail CreateSuccess
-
-
-
-createMeetupTask : NewMeetup -> Task Http.Error NewMeetup
-createMeetupTask meetup = 
-    let 
+createNewMeetup meetup =
+    let
         body =
-            meetupEncoded meetup 
-                |> Encode.encode 0
-                |> Http.string
+            meetup
+                |> meetupEncoded
+                |> Http.jsonBody 
+             
+    in
+        Http.post createMeetupUrl body memberDecoder
+            |>Http.send CreateMeetupRequest
 
-        config =
-            { verb = "POST"
-            , headers = ["Content-Type" => "application/json"]
-            , url = createMeetupUrl
-            , body = body
-            } 
-    in 
-        Http.send Http.defaultSettings config
-            |> Http.fromJson meetupDecoder
+
 
 
 

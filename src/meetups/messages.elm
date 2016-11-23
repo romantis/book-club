@@ -8,11 +8,9 @@ import Errors.Main as Errors
 
 
 type Msg 
-    = FetchAllDone (List Meetup)
-    | FetchAllFail Http.Error
+    = FetchMeetups (Result Http.Error (List Meetup))
     | MoreMeetups
     | Navigate String
     | SearchQuery String
-    | NowDateFail String
-    | NowDateSuccess Date
+    | NowDate Date
     | ErrMsg Errors.Msg

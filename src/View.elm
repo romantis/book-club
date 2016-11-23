@@ -2,7 +2,7 @@ module View exposing (view)
 
 import Html exposing (Html, div, text, h1)
 -- import Html.Attributes exposing (class)
-import Html.App as App
+import Html
 
 import Messages exposing (Msg(..))
 import Models exposing (Model)
@@ -20,7 +20,7 @@ import Shared.Footer as Footer
 view : Model -> Html Msg
 view model =
   div [] 
-    [ App.map HeaderMsg ( Header.view model.header)
+    [ Html.map HeaderMsg ( Header.view model.header)
     , page model
     , Footer.view 
     ] 
@@ -30,13 +30,13 @@ page : Model -> Html Msg
 page model = 
     case model.route of 
         MeetupsRoute ->
-            App.map MeetupsMsg (Meetups.listView model.meetups)  
+            Html.map MeetupsMsg (Meetups.listView model.meetups)  
         
         MeetupRoute _ ->
-            App.map MeetupMsg (Meetup.view model.meetup )
+            Html.map MeetupMsg (Meetup.view model.meetup )
 
         CreateMeetupRoute ->
-            App.map CreateMeetupMsg (CreateMeetup.view model.createMeetup)
+            Html.map CreateMeetupMsg (CreateMeetup.view model.createMeetup)
 
         NotFoundRoute ->
             NotFound.view
