@@ -120,8 +120,7 @@ meetupView meetup errors=
                 [ id "place-map"
                 , class "uk-width-small-1-1 uk-width-medium-1-2 uk-width-large-2-3"
                 , style 
-                    [ "background" => "#eee"
-                    , "min-height" => "55vh"
+                    [ "min-height" => "55vh"
                     ] 
                 ]
                 []

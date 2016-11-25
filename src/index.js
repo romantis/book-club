@@ -4,7 +4,6 @@
 require('uikit/dist/css/uikit.almost-flat.min.css');
 require('./main.css');
 
-const gm = require('google-maps');
 
 
 // Require index.html so it gets copied to dist
@@ -16,18 +15,20 @@ var mountNode = document.getElementById('main');
 // The third value on embed are the initial values for incomming ports into Elm
 var app = Elm.Main.embed(mountNode);
 
-app.ports.loadmap.subscribe(([latitude, longitude]) => {
-    gm.load((google) => {
-        let  options = {
-            center: new google.maps.LatLng(latitude, longitude),
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        setTimeout(() => {
-            let el = document.getElementById('place-map');
-            if (!el) return console.log("Ooops. Element is not ready ", el)
-            new google.maps.Map(el, options);
-        }
-        ,50)
-    });
+app.ports.loadmap.subscribe(([longitude, latitude]) => {
+    setTimeout(() => {
+      var map = new ol.Map({
+          target: 'place-map',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([longitude, latitude]),
+            zoom: 13
+          })
+        });
+    }
+    , 50);
 })

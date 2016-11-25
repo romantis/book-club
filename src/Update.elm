@@ -100,7 +100,7 @@ updCmdHelper m =
         MeetupRoute id ->
             case Meetup.getMaybeMeetup m.meetups.meetups id of
                 Just meetup ->
-                    loadmap (meetup.place.latitude, meetup.place.longitude) 
+                    loadmap (meetup.place.longitude, meetup.place.latitude) 
                 Nothing ->
                     Cmd.map MeetupMsg <| Meetup.commands id 
                       
