@@ -68,8 +68,9 @@ thumbnailTeaser title author url rColor =
     div 
         [ class "uk-panel-teaser"
         , style 
-            [ "background" => ("linear-gradient("++rColor++", black)" )
-            , "height" => "200px"
+            [ "height" => "auto"
+            , "border-top" => ".5rem solid"
+            , "border-top-color" => rColor
             ]
         ] 
         [ h3 [] 
@@ -77,9 +78,6 @@ thumbnailTeaser title author url rColor =
                 , href url
                 , style 
                     [ "font-size" => "1.2em"
-                    , "color" =>  rColor
-                    , "background" => "white"
-                    , "text-shadow" => "1px 1px 1px black"
                     , "padding" => "0 .5em"
                     ] 
                 ]  

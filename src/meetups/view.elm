@@ -76,7 +76,7 @@ meetupsList model =
 searchView : Html Msg
 searchView   =
     section [ class "bg-carbon-fibre uk-contrast" ]
-        [ div [ class "uk-width-small-2-3 uk-container-center uk-block uk-block-large" ] 
+        [ div [ class "uk-width-small-2-3 uk-container-center uk-block uk-block" ] 
             [ h1 
                 [ class "uk-h2"
                 , style ["color"=>"#35B3EE"]
